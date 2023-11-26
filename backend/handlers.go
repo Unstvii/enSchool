@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/smtp"
+	"os"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -16,8 +17,9 @@ import (
 
 func SendConfirmationEmail(userEmail string) {
 	// Налаштування
-	from := "julavoimer@gmail.com"
-	password := "blrjnjjcxelsygia"
+
+	from := os.Getenv("MAIL_SENDER_USER")
+	password := os.Getenv("MAIL_SENDER_PASSWORD")
 
 	// Дані листа
 	to := []string{userEmail}
@@ -41,9 +43,11 @@ func SendConfirmationEmail(userEmail string) {
 }
 
 func atlasConnect() (*mongo.Client, context.Context) {
-	clientOptions := options.Client().ApplyURI("mongodb+srv://unvi:1234@cluster0.zu5x1iv.mongodb.net/?retryWrites=true&w=majority")
+	connStr := fmt.Sprintf("mongodb+srv://%s:%s@cluster0.zu5x1iv.mongodb.net/?retryWrites=true&w=majority",
+		os.Getenv("DB_USER"),
+		os.Getenv("DB_PASSWORD"))
 
-	client, err := mongo.Connect(context.TODO(), clientOptions)
+	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(connStr))
 	if err != nil {
 		panic(err)
 	}
@@ -100,6 +104,12 @@ func CreateSnippet(w http.ResponseWriter, r *http.Request) {
 
 	// Отримати пароль
 	password := data["password"]
+	dbUser := os.Getenv("DB_USER")
+	dbPass := os.Getenv("DB_PASSWORD")
+
+	fmt.Println(dbUser)
+	fmt.Println(dbPass)
+	fmt.Println(dbUser)
 	println(password, email)
 	client, ctx := atlasConnect()
 
