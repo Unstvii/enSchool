@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/joho/godotenv"
 )
@@ -14,9 +15,10 @@ func main() {
 	if issue != nil {
 		log.Fatal("Error loading .env file")
 	}
-	mux.HandleFunc("/auth", CreateSnippet)
-	log.Println("Starting server on :4000")
-	err := http.ListenAndServe(":4000", mux)
+	mux.HandleFunc("/auth", authHandler)
+	mux.HandleFunc("/login", loginHandler)
+	log.Printf("Starting server on :%v", os.Getenv("SERVER"))
+	err := http.ListenAndServe(":"+os.Getenv("SERVER"), mux)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}

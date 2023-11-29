@@ -4,18 +4,30 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"net/smtp"
 	"os"
+	"time"
 
+	"github.com/golang-jwt/jwt"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"go.mongodb.org/mongo-driver/mongo/readpref"
 	"golang.org/x/crypto/bcrypt"
 )
 
-func SendConfirmationEmail(userEmail string) {
+var collection *mongo.Collection
+
+func generateToken(user User) (string, error) {
+	token := jwt.New(jwt.SigningMethodHS256)
+	claims := token.Claims.(jwt.MapClaims)
+	claims["email"] = user.Email
+	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
+
+	return token.SignedString([]byte(os.Getenv("SECRET")))
+}
+func SendConfirmationEmail(w http.ResponseWriter, userEmail string) {
 	// Налаштування
 
 	from := os.Getenv("MAIL_SENDER_USER")
@@ -35,84 +47,107 @@ func SendConfirmationEmail(userEmail string) {
 	// Відправка листа
 	err := smtp.SendMail(smtpHost+":"+smtpPort, auth, from, to, []byte(message))
 	if err != nil {
-		fmt.Printf("Error sending email: %s", err)
+		http.Error(w, "An error occurred when sending the letter", http.StatusInternalServerError)
 		return
 	}
 
-	fmt.Printf("Email sent successfully!")
+	fmt.Fprintln(w, "Email send successfully")
 }
 
-func atlasConnect() (*mongo.Client, context.Context) {
-	connStr := fmt.Sprintf("mongodb+srv://%s:%s@cluster0.zu5x1iv.mongodb.net/?retryWrites=true&w=majority",
+func atlasConnect() {
+	uri := fmt.Sprintf("mongodb+srv://%s:%s@cluster0.zu5x1iv.mongodb.net/?retryWrites=true&w=majority",
 		os.Getenv("DB_USER"),
 		os.Getenv("DB_PASSWORD"))
-
-	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(connStr))
+	clientOptions := options.Client().ApplyURI(uri)
+	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
-	// Перевірка з'єднання
-	if err := client.Ping(context.TODO(), readpref.Primary()); err != nil {
-		panic(err)
+	err = client.Ping(context.TODO(), nil)
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	return client, context.TODO()
-}
-func checkUser(client *mongo.Client, ctx context.Context, email, password string) {
-	collection := client.Database("mydb").Collection("users")
-	filter := bson.M{"email": email}
-	var result bson.M
-
-	err := collection.FindOne(ctx, filter).Decode(&result)
-
-	if err == mongo.ErrNoDocuments {
-		// Створити нового користувача
-		hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-		insertResult, err := collection.InsertOne(ctx, bson.D{
-			{Key: "email", Value: email},
-			{Key: "password", Value: string(hashedPassword)},
-		})
-		SendConfirmationEmail(email)
-
-		if err != nil {
-			panic(err)
-		}
-
-		fmt.Printf("New user %v created successfully", insertResult.InsertedID)
-	} else {
-		hashedPassword := result["password"].(string)
-		// Перевірити пароль
-		if err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password)); err != nil {
-			fmt.Println("Invalid password")
-		} else {
-			fmt.Println("Login successful")
-		}
-	}
+	collection = client.Database(os.Getenv("DATABASE")).Collection(os.Getenv("USER_COLLECTION"))
 }
 
-func CreateSnippet(w http.ResponseWriter, r *http.Request) {
+func authHandler(w http.ResponseWriter, r *http.Request) {
+	atlasConnect()
 	if r.Method != http.MethodPost {
-		w.Header().Set("Allow", http.MethodPost)
-		http.Error(w, "Method Not Allowed", 405)
+		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
 	}
-	var data map[string]string
-	json.NewDecoder(r.Body).Decode(&data)
-	email := data["email"]
-	// Отримати логін
 
-	// Отримати пароль
-	password := data["password"]
-	dbUser := os.Getenv("DB_USER")
-	dbPass := os.Getenv("DB_PASSWORD")
+	var user User
+	err := json.NewDecoder(r.Body).Decode(&user)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 
-	fmt.Println(dbUser)
-	fmt.Println(dbPass)
-	fmt.Println(dbUser)
-	println(password, email)
-	client, ctx := atlasConnect()
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+	if err != nil {
+		http.Error(w, "Error hashing password", http.StatusInternalServerError)
+		return
+	}
+	user.Password = string(hashedPassword)
 
-	checkUser(client, ctx, email, password)
+	var result User
+	err = collection.FindOne(context.TODO(), bson.M{"email": user.Email}).Decode(&result)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			_, err := collection.InsertOne(context.TODO(), user)
+			if err != nil {
+				http.Error(w, "Error inserting user into database", http.StatusInternalServerError)
+				return
+			}
+			SendConfirmationEmail(w, user.Email)
+			fmt.Fprintln(w, "User added to the database")
+		} else {
+			http.Error(w, "Error checking user in database", http.StatusInternalServerError)
+		}
+	} else {
+		http.Error(w, "Error bad credentials", http.StatusConflict)
+	}
+}
+func loginHandler(w http.ResponseWriter, r *http.Request) {
+	atlasConnect()
+	if r.Method != http.MethodPost {
+		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var user User
+	err := json.NewDecoder(r.Body).Decode(&user)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	var result User
+	err = collection.FindOne(context.TODO(), bson.M{"email": user.Email}).Decode(&result)
+	if err != nil {
+		http.Error(w, "User not found", http.StatusNotFound)
+		return
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(result.Password), []byte(user.Password))
+	if err != nil {
+		http.Error(w, "Invalid password", http.StatusUnauthorized)
+		return
+	}
+	tokenString, err := generateToken(result)
+	if err != nil {
+		http.Error(w, "Error generating token", http.StatusInternalServerError)
+		return
+	}
+
+	http.SetCookie(w, &http.Cookie{
+		Name:    "token",
+		Value:   tokenString,
+		Expires: time.Now().Add(72 * time.Hour),
+	})
+	fmt.Fprintln(w, "User login successfully!")
 
 }
