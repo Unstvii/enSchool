@@ -1,12 +1,19 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
 
 	"github.com/joho/godotenv"
 )
+
+func helloHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	fmt.Fprintln(w, "Hello from hello page!")
+}
 
 func main() {
 	mux := http.NewServeMux()
@@ -17,6 +24,7 @@ func main() {
 	}
 	mux.HandleFunc("/auth", authHandler)
 	mux.HandleFunc("/login", loginHandler)
+	mux.HandleFunc("/api/hello", helloHandler)
 	log.Printf("Starting server on :%v", os.Getenv("SERVER"))
 	err := http.ListenAndServe(":"+os.Getenv("SERVER"), mux)
 	if err != nil {

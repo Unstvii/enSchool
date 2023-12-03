@@ -1,6 +1,7 @@
 package main
 
 type User struct {
-	Email    string `bson:"email"`
-	Password string `bson:"password"`
+	NickName string `json:"nickName"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }

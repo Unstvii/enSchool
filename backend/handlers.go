@@ -27,6 +27,7 @@ func generateToken(user User) (string, error) {
 
 	return token.SignedString([]byte(os.Getenv("SECRET")))
 }
+
 func SendConfirmationEmail(w http.ResponseWriter, userEmail string) {
 	// Налаштування
 
@@ -73,6 +74,12 @@ func atlasConnect() {
 }
 
 func authHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	if r.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
 	atlasConnect()
 	if r.Method != http.MethodPost {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
@@ -97,18 +104,28 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 	err = collection.FindOne(context.TODO(), bson.M{"email": user.Email}).Decode(&result)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
-			_, err := collection.InsertOne(context.TODO(), user)
+			// Перевірка наявності nickName
+			err = collection.FindOne(context.TODO(), bson.M{"nickName": user.NickName}).Decode(&result)
 			if err != nil {
-				http.Error(w, "Error inserting user into database", http.StatusInternalServerError)
-				return
+				if err == mongo.ErrNoDocuments {
+					_, err := collection.InsertOne(context.TODO(), user)
+					if err != nil {
+						http.Error(w, "Error inserting user into database", http.StatusInternalServerError)
+						return
+					}
+					SendConfirmationEmail(w, user.Email)
+					fmt.Fprintln(w, "User added to the database")
+				} else {
+					http.Error(w, "Error checking nickName in database", http.StatusInternalServerError)
+				}
+			} else {
+				http.Error(w, "Error: nickName already exists", http.StatusConflict)
 			}
-			SendConfirmationEmail(w, user.Email)
-			fmt.Fprintln(w, "User added to the database")
 		} else {
 			http.Error(w, "Error checking user in database", http.StatusInternalServerError)
 		}
 	} else {
-		http.Error(w, "Error bad credentials", http.StatusConflict)
+		http.Error(w, "Error: email already exists", http.StatusConflict)
 	}
 }
 func loginHandler(w http.ResponseWriter, r *http.Request) {
