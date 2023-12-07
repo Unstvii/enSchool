@@ -1,0 +1,11 @@
+.NavPanel{
+    margin-top: 140px;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    font-weight: 200;
+    & li{
+        cursor: pointer;
+    }
+}

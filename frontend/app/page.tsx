@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import styles from './page.module.css'
 import MyForm from '../components/MyForm/MyForm'
-
+import CustomForm from '../components/CustomForm/CustomForm'
 export default function Home() {
   const handleClick = () => {
     fetch('http://localhost:4000/api/hello')
@@ -11,8 +11,9 @@ export default function Home() {
   }
   return (
     <>
-    <h1 onClick={handleClick}>Hello world</h1>
-    <MyForm/> 
+    {/* <h1 onClick={handleClick}>Hello world</h1> */}
+    {/* <MyForm/> */}
+<CustomForm/>
     </>
   )
 }

@@ -1,6 +1,8 @@
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import axios from 'axios';
 import * as Yup from 'yup';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function MyForm() {
   const validationSchema = Yup.object().shape({
@@ -28,12 +30,19 @@ function MyForm() {
         console.log(values);
 
         // Надсилання даних на бекенд
-        const response = await axios.post('http://localhost:4000/auth', values);
-
+        try{
+          await axios.post('http://localhost:4000/auth', values);
+        }catch(err){
+          toast.error("User already exists!", {
+            position: toast.POSITION.TOP_LEFT
+          });
+          console.log(response.data);
+        }
         // Обробка відповіді
-        console.log(response.data);
+     
       }}
     >
+    
       <Form>
         <label htmlFor="nickName">nickName</label>
         <Field name="nickName" type="text" />
@@ -50,6 +59,7 @@ function MyForm() {
         <button type="submit">Submit</button>
       </Form>
     </Formik>
+     <ToastContainer />
   </div>
   );
 }

@@ -1,0 +1,19 @@
+.SocialLogin{
+    display: flex;
+    justify-content: space-between;
+    & button{
+        width: 100%;
+        max-width: 150px;
+        background: none;
+        border: 1px solid #353137;
+        border-radius: 6px;
+        color: white;
+        padding: 10px 8px 10px 8px;
+        display: flex;
+        justify-content: space-around;
+        cursor: pointer;
+    }
+    & img{
+        width: 15px;
+    }
+}

@@ -73,18 +73,19 @@ func atlasConnect() {
 	collection = client.Database(os.Getenv("DATABASE")).Collection(os.Getenv("USER_COLLECTION"))
 }
 
-func authHandler(w http.ResponseWriter, r *http.Request) {
+func registerHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	if r.Method == http.MethodOptions {
 		w.WriteHeader(http.StatusOK)
 		return
 	}
-	atlasConnect()
 	if r.Method != http.MethodPost {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
 	}
+
+	atlasConnect()
 
 	var user User
 	err := json.NewDecoder(r.Body).Decode(&user)
@@ -100,40 +101,59 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	user.Password = string(hashedPassword)
 
-	var result User
-	err = collection.FindOne(context.TODO(), bson.M{"email": user.Email}).Decode(&result)
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	err = checkUserExists(ctx, &user)
 	if err != nil {
-		if err == mongo.ErrNoDocuments {
-			// Перевірка наявності nickName
-			err = collection.FindOne(context.TODO(), bson.M{"nickName": user.NickName}).Decode(&result)
-			if err != nil {
-				if err == mongo.ErrNoDocuments {
-					_, err := collection.InsertOne(context.TODO(), user)
-					if err != nil {
-						http.Error(w, "Error inserting user into database", http.StatusInternalServerError)
-						return
-					}
-					SendConfirmationEmail(w, user.Email)
-					fmt.Fprintln(w, "User added to the database")
-				} else {
-					http.Error(w, "Error checking nickName in database", http.StatusInternalServerError)
-				}
-			} else {
-				http.Error(w, "Error: nickName already exists", http.StatusConflict)
-			}
-		} else {
-			http.Error(w, "Error checking user in database", http.StatusInternalServerError)
-		}
-	} else {
-		http.Error(w, "Error: email already exists", http.StatusConflict)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
+
+	_, err = collection.InsertOne(ctx, user)
+	if err != nil {
+		http.Error(w, "Error inserting user into database", http.StatusInternalServerError)
+		return
+	}
+
+	SendConfirmationEmail(w, user.Email)
+	fmt.Fprintln(w, "User added to the database")
 }
+
+func checkUserExists(ctx context.Context, user *User) error {
+	var result User
+	err := collection.FindOne(ctx, bson.M{"email": user.Email}).Decode(&result)
+	if err == nil {
+		return fmt.Errorf("error: email already exists")
+	}
+	if err != mongo.ErrNoDocuments {
+		return fmt.Errorf("error checking user in database")
+	}
+
+	err = collection.FindOne(ctx, bson.M{"nickname": user.Nickname}).Decode(&result)
+	if err == nil {
+		return fmt.Errorf("error: nickname already exists")
+	}
+	if err != mongo.ErrNoDocuments {
+		return fmt.Errorf("error checking nickname in database")
+	}
+
+	return nil
+}
+
 func loginHandler(w http.ResponseWriter, r *http.Request) {
-	atlasConnect()
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	if r.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
 	if r.Method != http.MethodPost {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
 	}
+
+	atlasConnect()
 
 	var user User
 	err := json.NewDecoder(r.Body).Decode(&user)
@@ -143,7 +163,9 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var result User
-	err = collection.FindOne(context.TODO(), bson.M{"email": user.Email}).Decode(&result)
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	err = collection.FindOne(ctx, bson.M{"email": user.Email}).Decode(&result)
 	if err != nil {
 		http.Error(w, "User not found", http.StatusNotFound)
 		return
@@ -166,5 +188,4 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		Expires: time.Now().Add(72 * time.Hour),
 	})
 	fmt.Fprintln(w, "User login successfully!")
-
 }

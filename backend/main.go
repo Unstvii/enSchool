@@ -22,7 +22,7 @@ func main() {
 	if issue != nil {
 		log.Fatal("Error loading .env file")
 	}
-	mux.HandleFunc("/auth", authHandler)
+	mux.HandleFunc("/register", registerHandler)
 	mux.HandleFunc("/login", loginHandler)
 	mux.HandleFunc("/api/hello", helloHandler)
 	log.Printf("Starting server on :%v", os.Getenv("SERVER"))
