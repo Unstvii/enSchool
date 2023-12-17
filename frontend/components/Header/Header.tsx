@@ -5,7 +5,6 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -23,8 +22,8 @@ function Header() {
   };
 
   return (
-    <AppBar position="static">
-      <Container>
+    <AppBar position="static" sx={{ bgcolor: "#49BBBD", paddingTop: 2 }}>
+      <Box sx={{ width: "84%", ml: "10%", bgcolor: "#49BBBD" }}>
         <Toolbar>
           <Box sx={{ flexGrow: 1 }}>
             <Typography
@@ -47,7 +46,16 @@ function Header() {
               LOGO TITLE
             </Typography>
           </Box>
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          <Box
+            sx={{
+              display: {
+                xs: "none",
+                md: "flex",
+              },
+              width: "55%",
+              justifyContent: "space-evenly",
+            }}
+          >
             <Button component={Link} href="/" color="inherit">
               Home
             </Button>
@@ -111,19 +119,41 @@ function Header() {
               </MenuItem>
             </Menu>
           </Box>
-          <Button component={Link} href="/login" color="inherit">
+          <Button
+            component={Link}
+            href="/login"
+            sx={{
+              color: "#5B5B5B",
+              background: "#FFFFFF",
+              fontWeight: 500,
+              fontSize: "22px",
+              textTransform: "none",
+              borderRadius: "30px",
+              mr: 3,
+              width: "120px",
+            }}
+            variant="contained"
+          >
             Login
           </Button>
           <Button
             component={Link}
             href="/signup"
             variant="contained"
-            color="primary"
+            sx={{
+              color: "#FFFFFF",
+              background: "#7ECCCE",
+              fontWeight: 500,
+              fontSize: "22px",
+              textTransform: "none",
+              borderRadius: "30px",
+              width: "120px",
+            }}
           >
             Sign Up
           </Button>
         </Toolbar>
-      </Container>
+      </Box>
     </AppBar>
   );
 }
