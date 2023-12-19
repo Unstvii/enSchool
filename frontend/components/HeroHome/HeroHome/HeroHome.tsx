@@ -46,19 +46,19 @@ const HeroHome = () => {
             <Button
               sx={{
                 background: "#7FCFD1",
-                pt: "10px",
-                pb: "10px",
-                pr: "15px",
-                pl: "15px",
+                pt: "14px",
+                pb: "14px",
+                pr: "25px",
+                pl: "25px",
                 mr: 3,
                 borderRadius: "100px",
                 textTransform: "none",
                 color: "white",
-                fontWeight: 100,
+                fontWeight: 600,
                 fontSize: "24px",
               }}
             >
-              Join for Free
+              Join for free
             </Button>
             <Button
               sx={{ fontSize: "24px", color: "#252641", textTransform: "none" }}
