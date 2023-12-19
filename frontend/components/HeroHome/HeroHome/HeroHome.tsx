@@ -83,8 +83,8 @@ const HeroHome = () => {
               position: "absolute",
               bottom: 0,
               right: {
-                xs: 0,
-                md: "15%",
+                xs: "5%",
+                md: "10%",
               },
             }}
           >
@@ -100,8 +100,8 @@ const HeroHome = () => {
                 pr: "22px",
                 opacity: "80%",
                 position: "absolute",
-                left: "-30%",
-                top: "31vh",
+                left: "-20%",
+                top: "25vh",
               }}
             >
               <Box
@@ -161,7 +161,7 @@ const HeroHome = () => {
                 pr: "22px",
                 opacity: "80%",
                 position: "absolute",
-                right: "-30%",
+                right: "-20%",
                 top: "45vh",
               }}
             >
@@ -220,8 +220,9 @@ const HeroHome = () => {
                 pr: "22px",
                 opacity: "80%",
                 position: "absolute",
-                left: "-30%",
+                left: "-20%",
                 bottom: "15vh",
+                zIndex: 1000,
               }}
             >
               <Box
@@ -310,8 +311,10 @@ const HeroHome = () => {
             <Image
               src="/images/lovely-teenage-girl.png"
               alt="lovely image"
-              width={544}
-              height={892}
+              width={0}
+              height={0}
+              sizes="vw"
+              style={{ width: "85%", height: "auto", minWidth: "550px" }}
             />
           </Box>
         </Box>
