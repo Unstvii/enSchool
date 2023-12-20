@@ -13,6 +13,7 @@ const useStyles: any = makeStyles({
     fontSize: "32px",
     color: "#010514CC",
     fontWeight: "400",
+    transform: "translateY(-30px)",
   },
 });
 
