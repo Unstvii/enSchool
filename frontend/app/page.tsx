@@ -4,6 +4,7 @@ import CustomWave from "@/components/CustomWave/CustomWave";
 import Header from "@/components/Header/Header";
 import HeroHome from "@/components/HeroHome/HeroHome/HeroHome";
 import OurSuccess from "@/components/OurSuccess/OurSuccess";
+import WhatIs from "@/components/WhatIs/WhatIs";
 export default function Home() {
   return (
     <>
@@ -15,6 +16,7 @@ export default function Home() {
       <CustomWave />
       <OurSuccess />
       <AllInOne />
+      <WhatIs />
     </>
   );
 }
