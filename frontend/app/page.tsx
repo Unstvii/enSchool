@@ -1,6 +1,7 @@
 "use client";
 import AllInOne from "@/components/AllInOne/AllInOne";
 import CustomWave from "@/components/CustomWave/CustomWave";
+import EverythingYouCan from "@/components/EverythingYouCan/EverythingYouCan";
 import Header from "@/components/Header/Header";
 import HeroHome from "@/components/HeroHome/HeroHome/HeroHome";
 import OurSuccess from "@/components/OurSuccess/OurSuccess";
@@ -17,6 +18,7 @@ export default function Home() {
       <OurSuccess />
       <AllInOne />
       <WhatIs />
+      <EverythingYouCan />
     </>
   );
 }

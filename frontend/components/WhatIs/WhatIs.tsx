@@ -41,8 +41,18 @@ const WhatIs = () => {
         sx={{
           display: "flex",
           justifyContent: "space-evenly",
+          alignItems: "center",
+
           width: "85%",
           mt: 8,
+          flexDirection: {
+            xs: "column",
+            lg: "row",
+          },
+          gap: {
+            xs: 8,
+            lg: 1,
+          },
         }}
       >
         <Box
@@ -72,6 +82,10 @@ const WhatIs = () => {
               borderRadius: "100px",
               fontSize: "22px",
               fontWeight: "500",
+              padding: "15px 25px 15px 25px",
+              textTransform: "none",
+              border: "1px solid #FFFFFF",
+              mt: 2,
             }}
           >
             Start a class today
@@ -88,7 +102,6 @@ const WhatIs = () => {
             backgroundRepeat: "no-repeat",
             width: 600,
             height: 400,
-            backdropFilter: "drop-shadow(4px 4px 10px red)",
             borderRadius: "16px",
             border: "1px solid #171B4173",
           }}
@@ -105,6 +118,10 @@ const WhatIs = () => {
               background: "#23BDEEE5",
               fontSize: "22px",
               fontWeight: 500,
+              borderRadius: "100px",
+              padding: "15px 25px 15px 25px",
+              textTransform: "none",
+              mt: 2,
             }}
           >
             Enter access code

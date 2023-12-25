@@ -1,9 +1,6 @@
 import React, { useEffect } from "react";
 import { Typography } from "@mui/material";
 const HeaderItem = ({ title, isLargeScreen }: any) => {
-  useEffect(() => {
-    console.log(title, isLargeScreen);
-  }, []);
   return (
     <Typography
       sx={{
