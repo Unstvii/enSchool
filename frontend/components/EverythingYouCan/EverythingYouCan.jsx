@@ -47,15 +47,15 @@ const EverythingYouCan = () => {
           Learn more
         </Typography>
       </Grid>
-      <Grid item xs={6} sx={{}}>
+      <Grid item xs={6}>
         <CardMedia
           component="video"
           alt="video"
           image="/videos/mainVideo.mp4"
           title="video"
           type="video/mp4"
-          muted=""
-          autoPlay=""
+          muted={false}
+          autoPlay={false}
           poster="/images/confident-teacher.png"
           controls
           height="auto"

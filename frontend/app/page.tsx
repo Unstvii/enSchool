@@ -4,6 +4,7 @@ import CustomWave from "@/components/CustomWave/CustomWave";
 import EverythingYouCan from "@/components/EverythingYouCan/EverythingYouCan";
 import Header from "@/components/Header/Header";
 import HeroHome from "@/components/HeroHome/HeroHome/HeroHome";
+import OurFeatures from "@/components/OurFeatures/OurFeatures";
 import OurSuccess from "@/components/OurSuccess/OurSuccess";
 import WhatIs from "@/components/WhatIs/WhatIs";
 export default function Home() {
@@ -19,6 +20,7 @@ export default function Home() {
       <AllInOne />
       <WhatIs />
       <EverythingYouCan />
+      <OurFeatures />
     </>
   );
 }
