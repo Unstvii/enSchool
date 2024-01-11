@@ -172,7 +172,8 @@ const OurFeatures = () => {
               maxWidth: "350px",
             }}
           >
-            One-on-One <span style={{ color: "#00CBB8" }}>Discussions</span>
+            Assessments,<span style={{ color: "#00CBB8" }}> Quizzes</span>,
+            Tests
           </Typography>
         </Grid>
         <Typography
@@ -183,10 +184,56 @@ const OurFeatures = () => {
             maxWidth: "500px",
           }}
         >
-          Teachers and teacher assistants can talk with students privately
-          without leaving the Zoom environment.
+          Easily launch live assignments, quizzes, and tests. Student results
+          are automatically entered in the online gradebook.
         </Typography>
       </Grid>
+      <Grid
+        item
+        xs={5}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "column",
+          alignItems: "flex-end",
+          gap: "20px",
+        }}
+      >
+        <Grid item sx={{ mr: 14 }}>
+          <Typography
+            variant="h4"
+            sx={{
+              fontSize: "40px",
+              fontWeight: 700,
+              color: "#2F327D",
+              maxWidth: "390px",
+            }}
+          >
+            <span style={{ color: "#00CBB8" }}>Class Management </span> Tools
+            for Educators
+          </Typography>
+        </Grid>
+        <Typography
+          sx={{
+            fontSize: "22px",
+            fontWeight: 400,
+            color: "#696984",
+            maxWidth: "500px",
+          }}
+        >
+          Class provides tools to help run and manage the class such as Class
+          Roster, Attendance, and more. With the Gradebook, teachers can review
+          and grade tests and quizzes in real-time.
+        </Typography>
+      </Grid>
+      <FeaturesImage
+        imageSrc={"/images/lovely-teenage-girl.png"}
+        fraction={6}
+      />
+      <FeaturesImage
+        imageSrc={"/images/lovely-teenage-girl.png"}
+        fraction={6}
+      />
       <Grid
         item
         xs={5}
