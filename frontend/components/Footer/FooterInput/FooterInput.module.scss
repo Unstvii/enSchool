@@ -1,0 +1,15 @@
+.Footer__form {
+    text-align: center;
+
+   & input{
+    border: 1px solid #83839A;
+    border-radius: 80px;
+    font-size: 20px;
+    letter-spacing: 1px;
+    padding: 0px 0px 0px 30px;
+    color: #83839A;
+    background-color: transparent;
+    width: 400px;
+    height: 60px;
+   }
+}
