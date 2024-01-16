@@ -9,6 +9,7 @@ import LatestNews from "@/components/LatestNews/LatestNews";
 import OurFeatures from "@/components/OurFeatures/OurFeatures";
 import OurSuccess from "@/components/OurSuccess/OurSuccess";
 import WhatIs from "@/components/WhatIs/WhatIs";
+import WhatTheySay from "@/components/WhatTheySay/WhatTheySay";
 export default function Home() {
   return (
     <>
@@ -22,6 +23,7 @@ export default function Home() {
       <WhatIs />
       <EverythingYouCan />
       <OurFeatures />
+      <WhatTheySay />
       <LatestNews />
       <Footer />
     </>
