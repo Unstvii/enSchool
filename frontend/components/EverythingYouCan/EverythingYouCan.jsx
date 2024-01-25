@@ -3,8 +3,18 @@ import { Grid, Typography, CardMedia } from "@mui/material";
 
 const EverythingYouCan = () => {
   return (
-    <Grid container sx={{ margin: "0 auto", mt: 15, width: "80%" }}>
-      <Grid item xs={6}>
+    <Grid
+      container
+      sx={{
+        margin: "0 auto",
+        mt: 15,
+        width: {
+          lg: "80%",
+          xs: "90%",
+        },
+      }}
+    >
+      <Grid item xs={12} lg={6}>
         <Typography
           variant="h4"
           sx={{
@@ -13,6 +23,10 @@ const EverythingYouCan = () => {
             color: "#2F327D",
             mb: 2,
             lineHeight: "57.6px",
+            textAlign: {
+              xs: "center",
+              lg: "left",
+            },
           }}
         >
           Everything you can do in a physical classroom,
@@ -23,7 +37,10 @@ const EverythingYouCan = () => {
             fontSize: "24px",
             fontWeight: "400",
             color: "#696984",
-            maxWidth: "650px",
+            maxWidth: {
+              lg: "650px",
+              sx: "auto",
+            },
             lineHeight: "43.2px",
           }}
         >
@@ -47,7 +64,7 @@ const EverythingYouCan = () => {
           Learn more
         </Typography>
       </Grid>
-      <Grid item xs={6}>
+      <Grid item xs={12} lg={6} mt={{ xs: 8, lg: 0 }}>
         <CardMedia
           component="video"
           alt="video"

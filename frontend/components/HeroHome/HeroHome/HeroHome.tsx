@@ -18,9 +18,18 @@ const HeroHome = () => {
       <Box
         sx={{
           display: "flex",
-          justifyContent: "space-between",
-          width: "90%",
-          ml: "10%",
+          justifyContent:{
+            xs:"center",
+            lg:"space-between",
+          },
+          width: {
+            xs: "100%",
+            lg: "90%",
+          },
+          ml: {
+            xs: "0%",
+            lg: "10%",
+          },
         }}
       >
         <Box>
@@ -85,6 +94,10 @@ const HeroHome = () => {
               right: {
                 xs: "5%",
                 md: "10%",
+              },
+              display: {
+                xs: "none",
+                lg: "block",
               },
             }}
           >

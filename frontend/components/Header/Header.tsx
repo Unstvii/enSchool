@@ -33,7 +33,7 @@ function Header() {
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   let isLargeScreen = true;
-  isLargeScreen = useMediaQuery("(min-width:900px)");
+  isLargeScreen = useMediaQuery("(min-width:1200px)");
 
   const handleDrawerOpen = () => {
     setIsDrawerOpen(true);
@@ -148,7 +148,7 @@ function Header() {
           {isLargeScreen ? (
             menuItems
           ) : (
-            <Box sx={{ display: { xs: "flex", md: "none" } }}>
+            <Box sx={{ display: "flex" }}>
               <IconButton
                 size="large"
                 edge="end"

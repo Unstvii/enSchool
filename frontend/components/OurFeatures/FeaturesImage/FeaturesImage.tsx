@@ -7,7 +7,10 @@ const FeaturesImage = ({ imageSrc, fraction }: any) => {
       item
       xs={fraction}
       sx={{
-        display: "flex",
+        display: {
+          xs: "none",
+          lg: "flex",
+        },
         alignItems: "center",
         justifyContent: "center",
       }}

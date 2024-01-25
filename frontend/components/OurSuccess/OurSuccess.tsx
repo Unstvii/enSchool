@@ -1,4 +1,4 @@
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Container, Grid, Typography } from "@mui/material";
 import React from "react";
 import OurSuccessStats from "./OurSuccessStats/OurSuccessStats";
 const OurSuccess = () => {
@@ -23,7 +23,10 @@ const OurSuccess = () => {
             fontSize: "18px",
             fontWeight: "400",
             color: "#010514",
-            width: "700px",
+            width: {
+              md: "700px",
+              sx: "auto",
+            },
             textAlign: "center",
           }}
         >
@@ -32,12 +35,16 @@ const OurSuccess = () => {
           ultrices eu ornare tristique vel nisl orci.
         </Typography>
       </Box>
-      <Box
+      <Grid
+        container
         sx={{
           display: "flex",
           justifyContent: "space-evenly",
           pt: 10,
-          width: "90%",
+          width: {
+            md: "100%",
+            lg: "90%",
+          },
           margin: "0 auto",
         }}
       >
@@ -46,7 +53,7 @@ const OurSuccess = () => {
         <OurSuccessStats title="35" text="Main questions" special="" />
         <OurSuccessStats title="26" text="Chief experts" special="" />
         <OurSuccessStats title="16" text="Years of experience" special="" />
-      </Box>
+      </Grid>
     </Box>
   );
 };
