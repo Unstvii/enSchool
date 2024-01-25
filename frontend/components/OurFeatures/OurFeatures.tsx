@@ -19,8 +19,8 @@ const useStyles: any = makeStyles({
     letterSpacing: "1px",
   },
   IconWrapper: {
-    width: "60px",
-    height: "60px",
+    minWidth: "60px",
+    minHeight: "60px",
     borderRadius: "100px",
     boxShadow: "0px 0px 5px 0px rgba(38,45,118,0.08)",
     display: "flex",
@@ -49,15 +49,25 @@ const OurFeatures = () => {
       <FeaturesImage
         imageSrc={"/images/lovely-teenage-girl.png"}
         fraction={7}
+        sx={{ display: "none" }}
       />
       <Grid
         item
-        xs={5}
+        xs={12}
+        lg={5}
         sx={{
           display: "flex",
           justifyContent: "center",
           gap: "40px",
           flexDirection: "column",
+          alignItems: {
+            xs: "center",
+            lg: "left",
+          },
+          mt: {
+            xs: 10,
+            lg: 0,
+          },
         }}
       >
         <Typography
@@ -75,7 +85,7 @@ const OurFeatures = () => {
         </Typography>
         <Grid item sx={{ display: "flex", gap: "30px" }}>
           <span className={classes.IconWrapper}>
-            <WidgetsTwoToneIcon sx={{ color: "#2F327D", width: "30px" }} />
+            <WidgetsTwoToneIcon sx={{ color: "#2F327D", fontSize: "27px" }} />
           </span>
           <Typography className={classes.CustomPar}>
             Teachers don’t get lost in the grid view and have a dedicated Podium
@@ -88,7 +98,7 @@ const OurFeatures = () => {
               sx={{
                 color: "#F48C06",
                 boxShadow: " 5px 5px 0px 0px rgba(47,50,125,1)",
-                width: "30px",
+                fontSize: "18px",
               }}
             />
           </span>
@@ -98,7 +108,7 @@ const OurFeatures = () => {
         </Grid>
         <Grid item sx={{ display: "flex", gap: "30px" }}>
           <span className={classes.IconWrapper}>
-            <GroupsIcon sx={{ color: "#2F327D", width: "30px" }} />
+            <GroupsIcon sx={{ color: "#2F327D", fontSize: "32px" }} />
           </span>
           <Typography className={classes.CustomPar}>
             Teachers can easily see all students and class data at one time.
@@ -107,13 +117,21 @@ const OurFeatures = () => {
       </Grid>
       <Grid
         item
-        xs={5}
+        xs={12}
+        lg={5}
         sx={{
           display: "flex",
           justifyContent: "center",
           flexDirection: "column",
-          alignItems: "flex-end",
           gap: "20px",
+          alignItems: {
+            xs: "center",
+            lg: "flex-end",
+          },
+          mt: {
+            xs: 10,
+            lg: 0,
+          },
         }}
       >
         <Grid item sx={{ mr: 18 }}>
@@ -153,12 +171,21 @@ const OurFeatures = () => {
       />
       <Grid
         item
-        xs={5}
+        xs={12}
+        lg={5}
         sx={{
           display: "flex",
           justifyContent: "center",
           flexDirection: "column",
-          alignItems: "flex-start",
+
+          alignItems: {
+            xs: "center",
+            lg: "flex-start",
+          },
+          mt: {
+            xs: 10,
+            lg: 0,
+          },
           gap: "20px",
         }}
       >
@@ -190,12 +217,20 @@ const OurFeatures = () => {
       </Grid>
       <Grid
         item
-        xs={5}
+        xs={12}
+        lg={5}
         sx={{
           display: "flex",
           justifyContent: "center",
           flexDirection: "column",
-          alignItems: "flex-end",
+          alignItems: {
+            xs: "center",
+            lg: "flex-end",
+          },
+          mt: {
+            xs: 10,
+            lg: 0,
+          },
           gap: "20px",
         }}
       >
@@ -236,12 +271,20 @@ const OurFeatures = () => {
       />
       <Grid
         item
-        xs={5}
+        xs={12}
+        lg={5}
         sx={{
           display: "flex",
           justifyContent: "center",
           flexDirection: "column",
-          alignItems: "flex-start",
+          alignItems: {
+            xs: "center",
+            lg: "flex-start",
+          },
+          mt: {
+            xs: 10,
+            lg: 0,
+          },
           gap: "20px",
         }}
       >

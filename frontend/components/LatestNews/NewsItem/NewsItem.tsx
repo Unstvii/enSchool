@@ -1,10 +1,27 @@
 import React from "react";
 import { Button, Grid, Typography } from "@mui/material";
 import Image from "next/image";
-const NewsItem = ({ title, line, image, buttonText }: any) => {
+const NewsItem = ({ title, line, image, buttonText, special }: any) => {
   return (
-    <Grid container>
-      <Grid item xs={5} sx={{ position: "relative" }}>
+    <Grid
+      container
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
+      <Grid
+        item
+        xs={12}
+        md={4}
+        xl={5}
+        sx={{
+          position: "relative",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
         <Image
           src={image}
           alt="news image"
@@ -16,7 +33,7 @@ const NewsItem = ({ title, line, image, buttonText }: any) => {
         <Button
           variant="contained"
           sx={{
-            position: "absolute",
+            position: "relative",
             minWidth: "100px",
             display: "block",
             fontSize: "15px",
@@ -25,15 +42,22 @@ const NewsItem = ({ title, line, image, buttonText }: any) => {
             background: "#49BBBD",
             letterSpacing: "1px",
             borderRadius: "100px",
-            bottom: "20px",
-            right: "58px",
+            bottom: "50px",
+            right: special ? "-45px" : "-65px",
             padding: "4px 9px 4px 9px",
           }}
         >
           {buttonText}
         </Button>
       </Grid>
-      <Grid item xs={7} mt={1}>
+      <Grid
+        item
+        xs={12}
+        md={7}
+        xl={6}
+        mt={1}
+        sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+      >
         <Typography
           variant="h5"
           sx={{

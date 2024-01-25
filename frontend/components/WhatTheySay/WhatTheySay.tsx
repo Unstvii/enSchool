@@ -6,7 +6,6 @@ import Image from "next/image";
 
 const useStyles: any = makeStyles({
   WhatLine: {
-    fontSize: "26px",
     fontWeight: 400,
     letterSpacing: "1px",
     color: "#696984",
@@ -40,7 +39,10 @@ const feedbackData = [
 const WhatTheySay = () => {
   const styles = useStyles();
   return (
-    <Grid container sx={{ width: "80%", margin: "0 auto", marginTop: 20 }}>
+    <Grid
+      container
+      sx={{ width: { xs: "95%", lg: "80%" }, margin: "0 auto", marginTop: 20 }}
+    >
       <Grid item xs={6}>
         <Grid sx={{ display: "flex" }}>
           <Grid
@@ -66,7 +68,11 @@ const WhatTheySay = () => {
         <Typography
           variant="h3"
           sx={{
-            fontSize: "60px",
+            fontSize: {
+              xs: "45px",
+              lg: "60px",
+            },
+
             fontWeight: 700,
             color: "#2F327D",
             marginTop: "30px",
@@ -74,14 +80,23 @@ const WhatTheySay = () => {
         >
           What They Say?
         </Typography>
-        <Typography sx={{ marginTop: "29px" }} className={styles.WhatLine}>
+        <Typography
+          sx={{ marginTop: "29px", fontSize: { xs: "20px", lg: "26px" } }}
+          className={styles.WhatLine}
+        >
           TOTC has got more than 100k positive ratings from our users around the
           world.
         </Typography>
-        <Typography sx={{ marginTop: "26px" }} className={styles.WhatLine}>
+        <Typography
+          sx={{ marginTop: "26px", fontSize: { xs: "20px", lg: "26px" } }}
+          className={styles.WhatLine}
+        >
           Some of the students and teachers were greatly helped by the Skilline.
         </Typography>
-        <Typography sx={{ marginTop: "46px" }} className={styles.WhatLine}>
+        <Typography
+          sx={{ marginTop: "46px", fontSize: { xs: "20px", lg: "26px" } }}
+          className={styles.WhatLine}
+        >
           Are you too? Please give your assessment
         </Typography>
         <Button

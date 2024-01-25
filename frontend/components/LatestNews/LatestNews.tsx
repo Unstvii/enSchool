@@ -33,7 +33,15 @@ const LatestNews = () => {
   return (
     <Grid
       container
-      sx={{ width: "80%", margin: "0 auto", marginTop: 20, marginBottom: 15 }}
+      sx={{
+        width: {
+          lg: "95%",
+          xl: "85%",
+        },
+        margin: "0 auto",
+        marginTop: 20,
+        marginBottom: 15,
+      }}
     >
       <Grid item xs={12} sx={{ textAlign: "center", mb: 10 }}>
         <Typography
@@ -48,11 +56,22 @@ const LatestNews = () => {
           See the developments that have occurred to TOTC in the world
         </Typography>
       </Grid>
-      <Grid container>
+      <Grid container sx={{ gap: { xs: "120px", lg: "0px" } }}>
         <Grid
           item
-          sx={{ display: "flex", flexDirection: "column", gap: "20px" }}
-          xs={6}
+          lg={6}
+          xs={12}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: {
+              xs: "center",
+              xl: "initial",
+            },
+            margin: { xs: "0 auto" },
+            textAlign: { xs: "center", lg: "left" },
+            gap: "20px",
+          }}
         >
           <Image
             src="/images/latest-news-laptop.png"
@@ -89,25 +108,33 @@ const LatestNews = () => {
         </Grid>
         <Grid
           item
-          sx={{ display: "flex", flexDirection: "column", gap: "50px" }}
-          xs={6}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "50px",
+          }}
+          xs={12}
+          xl={6}
         >
           <NewsItem
             title="Class Technologies Inc. Closes $30 Million Series A Financing to Meet High Demand"
             line="Class Technologies Inc., the company that created Class,..."
             buttonText="PRESS RELEASE"
+            special={true}
             image="/images/latest-new-child.png"
           />
           <NewsItem
             title="Class Technologies Inc. Closes $30 Million Series A Financing to Meet High Demand"
             line="Class Technologies Inc., the company that created Class,..."
             buttonText="NEWS"
+            special={false}
             image="/images/news-meeting.png"
           />
           <NewsItem
             title="Class Technologies Inc. Closes $30 Million Series A Financing to Meet High Demand"
             line="Class Technologies Inc., the company that created Class,..."
             buttonText="NEWS"
+            special={false}
             image="/images/news-cat.png"
           />
         </Grid>
