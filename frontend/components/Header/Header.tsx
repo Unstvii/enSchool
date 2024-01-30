@@ -28,7 +28,7 @@ const useStyles: any = makeStyles({
     },
   },
 });
-function Header() {
+const Header = ({ isMainPage }: any) => {
   const classes = useStyles();
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -52,16 +52,32 @@ function Header() {
       }}
     >
       <ListItem component={Link} href="/" onClick={handleDrawerClose}>
-        <HeaderItem title="Home" isLargeScreen={isLargeScreen} />
+        <HeaderItem
+          title="Home"
+          isLargeScreen={isLargeScreen}
+          isMainPage={isMainPage}
+        />
+      </ListItem>
+      <ListItem component={Link} href="/courses" onClick={handleDrawerClose}>
+        <HeaderItem
+          title="Courses"
+          isLargeScreen={isLargeScreen}
+          isMainPage={isMainPage}
+        />
       </ListItem>
       <ListItem component={Link} href="/about" onClick={handleDrawerClose}>
-        <HeaderItem title="Courses" isLargeScreen={isLargeScreen} />
+        <HeaderItem
+          title="Careers"
+          isLargeScreen={isLargeScreen}
+          isMainPage={isMainPage}
+        />
       </ListItem>
       <ListItem component={Link} href="/about" onClick={handleDrawerClose}>
-        <HeaderItem title="Careers" isLargeScreen={isLargeScreen} />
-      </ListItem>
-      <ListItem component={Link} href="/about" onClick={handleDrawerClose}>
-        <HeaderItem title="Blog" isLargeScreen={isLargeScreen} />
+        <HeaderItem
+          title="Blog"
+          isLargeScreen={isLargeScreen}
+          isMainPage={isMainPage}
+        />
       </ListItem>
 
       <ListItem
@@ -70,7 +86,11 @@ function Header() {
         onClick={handleDrawerClose}
         sx={{ minWidth: "150px" }}
       >
-        <HeaderItem title="About Us" isLargeScreen={isLargeScreen} />
+        <HeaderItem
+          title="About Us"
+          isLargeScreen={isLargeScreen}
+          isMainPage={isMainPage}
+        />
       </ListItem>
       <ListItem
         component={Link}
@@ -121,8 +141,20 @@ function Header() {
   );
 
   return (
-    <AppBar position="static" sx={{ bgcolor: "#49BBBD", paddingTop: 2 }}>
-      <Box sx={{ width: "84%", ml: "10%", bgcolor: "#49BBBD" }}>
+    <AppBar
+      position="static"
+      sx={{
+        bgcolor: isMainPage ? "#49BBBD" : "#FFFFFF",
+        padding: "16px 0px 16px 0px",
+      }}
+    >
+      <Box
+        sx={{
+          width: "84%",
+          ml: "10%",
+          bgcolor: isMainPage ? "#49BBBD" : "#FFFFFF",
+        }}
+      >
         <Toolbar>
           <Box sx={{ flexGrow: 1 }}>
             <Typography
@@ -132,7 +164,7 @@ function Header() {
               passHref
               sx={{
                 textDecoration: "none",
-                color: "inherit",
+                color: isMainPage ? "#FFFFFF" : "#5B5B5B",
                 display: "flex",
                 alignItems: "center",
               }}
@@ -152,7 +184,7 @@ function Header() {
               <IconButton
                 size="large"
                 edge="end"
-                color="inherit"
+                color={isMainPage ? "inherit" : "default"}
                 aria-label="menu"
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
@@ -173,6 +205,6 @@ function Header() {
       </Box>
     </AppBar>
   );
-}
+};
 
 export default Header;
