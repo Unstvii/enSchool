@@ -15,7 +15,7 @@ export default function Home() {
     <>
       {/* <MyForm/>
       <CustomForm/> */}
-      <Header />
+      <Header isMainPage={true} />
       <HeroHome />
       <CustomWave />
       <OurSuccess />
