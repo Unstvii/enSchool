@@ -25,7 +25,6 @@ export default function Home() {
       <OurFeatures />
       <WhatTheySay />
       <LatestNews />
-      <Footer />
     </>
   );
 }

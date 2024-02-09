@@ -11,6 +11,7 @@ const ChoiseFavorite = () => {
         margin: "0 auto",
         display: "flex",
         justifyContent: "center",
+        paddingBottom: "100px",
       }}
     >
       <Typography

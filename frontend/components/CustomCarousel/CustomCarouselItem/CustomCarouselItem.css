@@ -1,0 +1,9 @@
+.customSwiperContainer{
+    display: block;
+}
+@media screen and (max-width: 1249px) {
+    .customSwiperContainer{
+        display: flex;
+        justify-content: center;
+    }
+}

@@ -18,9 +18,9 @@ const HeroHome = () => {
       <Box
         sx={{
           display: "flex",
-          justifyContent:{
-            xs:"center",
-            lg:"space-between",
+          justifyContent: {
+            xs: "center",
+            lg: "space-between",
           },
           width: {
             xs: "100%",

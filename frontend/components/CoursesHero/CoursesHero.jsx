@@ -4,14 +4,16 @@ import CourserHeroItem from "./CoursesHeroItem/CoursesHeroItem";
 
 const CoursesHero = ({ choiseData }) => {
   return (
-    <Grid>
+    <Grid
+      sx={{ background: "rgba(157, 204, 255, 0.2)", paddingBottom: "60px" }}
+    >
       <Grid
         sx={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          width: "90%",
-          margin: "0 auto",
+          width: "83%",
+          ml: "11%",
         }}
       >
         <Typography
@@ -38,13 +40,7 @@ const CoursesHero = ({ choiseData }) => {
         </Typography>
       </Grid>
 
-      <Grid
-        sx={{
-          display: "flex",
-          gap: "50px",
-          justifyContent: "center",
-        }}
-      >
+      <Grid>
         <CourserHeroItem choiseData={choiseData} />
       </Grid>
     </Grid>
