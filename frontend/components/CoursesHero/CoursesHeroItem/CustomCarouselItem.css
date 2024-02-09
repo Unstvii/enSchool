@@ -1,0 +1,9 @@
+.customLessonContainer{
+    display: block;
+}
+@media screen and (max-width: 1000px) {
+    .customLessonContainer{
+        display: flex;
+        justify-content: center;
+    }
+}

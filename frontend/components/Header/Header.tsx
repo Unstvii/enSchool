@@ -150,7 +150,7 @@ const Header = ({ isMainPage }: any) => {
     >
       <Box
         sx={{
-          width: "84%",
+          width: "90%",
           ml: "10%",
           bgcolor: isMainPage ? "#49BBBD" : "#FFFFFF",
         }}
