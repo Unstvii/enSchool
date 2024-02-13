@@ -25,6 +25,8 @@ func main() {
 	mux.HandleFunc("/register", registerHandler)
 	mux.HandleFunc("/login", loginHandler)
 	mux.HandleFunc("/api/hello", helloHandler)
+	mux.HandleFunc("/courses", courseCreateHandler)
+	mux.HandleFunc("/courses/id", courseGetHandler)
 	log.Printf("Starting server on :%v", os.Getenv("SERVER"))
 	err := http.ListenAndServe(":"+os.Getenv("SERVER"), mux)
 	if err != nil {

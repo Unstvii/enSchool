@@ -55,7 +55,7 @@ func SendConfirmationEmail(w http.ResponseWriter, userEmail string) {
 	fmt.Fprintln(w, "Email send successfully")
 }
 
-func atlasConnect() {
+func atlasConnect(DB string) {
 	uri := fmt.Sprintf("mongodb+srv://%s:%s@cluster0.zu5x1iv.mongodb.net/?retryWrites=true&w=majority",
 		os.Getenv("DB_USER"),
 		os.Getenv("DB_PASSWORD"))
@@ -70,7 +70,7 @@ func atlasConnect() {
 		log.Fatal(err)
 	}
 
-	collection = client.Database(os.Getenv("DATABASE")).Collection(os.Getenv("USER_COLLECTION"))
+	collection = client.Database(os.Getenv("DATABASE")).Collection(os.Getenv(DB))
 }
 
 func registerHandler(w http.ResponseWriter, r *http.Request) {
@@ -85,7 +85,7 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	atlasConnect()
+	atlasConnect("USER_COLLECTION")
 
 	var user User
 	err := json.NewDecoder(r.Body).Decode(&user)
@@ -153,7 +153,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	atlasConnect()
+	atlasConnect("USER_COLLECTION")
 
 	var user User
 	err := json.NewDecoder(r.Body).Decode(&user)

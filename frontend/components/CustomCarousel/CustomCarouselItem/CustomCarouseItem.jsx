@@ -23,6 +23,9 @@ const CustomCarouselItem = ({ carouselData, carouselType }) => {
     prevSlides.slides = slidesPerView;
     setSlides(prevSlides);
   };
+  const clicki = () => {
+    console.log(carouselData);
+  };
   useEffect(() => {
     if (window.innerWidth <= 1650 && window.innerWidth >= 1251) {
       setSlidesValue(1, 3);
@@ -114,8 +117,8 @@ const CustomCarouselItem = ({ carouselData, carouselType }) => {
               <Image
                 width={335}
                 height={239}
+                style={{ borderRadius: "20px" }}
                 src={data.image}
-                sx={{ borderRadius: "20px" }}
                 alt="article-picture"
               />
               <Grid
@@ -161,7 +164,7 @@ const CustomCarouselItem = ({ carouselData, carouselType }) => {
                         color: "#D9D9D9",
                       }}
                     />
-                    {data.duration}
+                    {data.lessons + " "}hours
                   </Typography>
                 </Grid>
               </Grid>
@@ -230,6 +233,7 @@ const CustomCarouselItem = ({ carouselData, carouselType }) => {
                       color: "#000000",
                     }}
                     ml="17px"
+                    onClick={clicki}
                   >
                     Lina
                   </Typography>
@@ -259,7 +263,7 @@ const CustomCarouselItem = ({ carouselData, carouselType }) => {
                       color: "#49BBBD",
                     }}
                   >
-                    ${data.pricing}
+                    ${data.price}
                   </Typography>
                 </Grid>
               </Grid>
