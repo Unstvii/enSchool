@@ -8,7 +8,7 @@ import CustomCarouselData from "../../components/CustomCarousel/CustomCarouselDa
 import CustomCarouselLargerData from "../../components/CustomCarousel/CustomCarouselLargerData";
 import CoursesHero from "../../components/CoursesHero/CoursesHero";
 import CourserData from "../../components/CoursesHero/CoursesData";
-import { getCourse } from "../../components/api/register";
+import { getCourses } from "../../components/api/register";
 
 const page = () => {
   const [courses, setCourses] = useState([]);
@@ -16,7 +16,7 @@ const page = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await getCourse("Hard IT");
+        const response = await getCourses("Hard IT");
         setCourses(response.data);
       } catch (error) {
         console.error("Помилка при отриманні даних", error);
@@ -38,7 +38,7 @@ const page = () => {
         carouselType="recomended"
       />
       <CustomCarousel
-        title="Recommended for you"
+        title="Get choice of your course"
         link="#"
         background="#FFFFFF"
         carouselData={CustomCarouselData}
@@ -46,14 +46,14 @@ const page = () => {
       />
       <OnlineCoaching />
       <CustomCarousel
-        title="Recommended for you"
+        title="The course in personal development"
         link="#"
         background="#FFFFFF"
         carouselData={CustomCarouselData}
         carouselType="personalDevelopment"
       />
       <CustomCarousel
-        title="Recommended for you"
+        title="Student are viewing"
         link="#"
         background="rgba(157, 204, 255, 0.2)"
         carouselData={CustomCarouselData}
