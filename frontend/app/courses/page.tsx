@@ -8,7 +8,7 @@ import CustomCarouselData from "../../components/CustomCarousel/CustomCarouselDa
 import CustomCarouselLargerData from "../../components/CustomCarousel/CustomCarouselLargerData";
 import CoursesHero from "../../components/CoursesHero/CoursesHero";
 import CourserData from "../../components/CoursesHero/CoursesData";
-import { getCourses } from "../../components/api/register";
+import { getCourses } from "../../components/api/course";
 
 const page = () => {
   const [courses, setCourses] = useState([]);

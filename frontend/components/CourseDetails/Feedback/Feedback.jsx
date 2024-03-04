@@ -17,7 +17,7 @@ const Feedback = ({ author, rate, image, date, title }) => {
         >
           <Image
             src={image}
-            alt="lovely image"
+            alt="author image"
             width="70"
             height="70"
             style={{

@@ -179,8 +179,9 @@ const Overview = ({ course }) => {
             <Box
               sx={{
                 width: "100%",
-                height: "0.5px",
+                height: "1px",
                 background: "#696984",
+                opacity: "0.5",
                 margin: "24px 0px 24px 0px",
               }}
             ></Box>

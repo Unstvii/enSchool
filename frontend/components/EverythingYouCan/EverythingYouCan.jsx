@@ -1,11 +1,12 @@
 import React from "react";
 import { Grid, Typography, CardMedia } from "@mui/material";
 
-const EverythingYouCan = () => {
+const EverythingYouCan = ({ data }) => {
   return (
     <Grid
       container
       sx={{
+        paddingBottom: "50px",
         margin: "0 auto",
         mt: 15,
         width: {
@@ -29,8 +30,8 @@ const EverythingYouCan = () => {
             },
           }}
         >
-          Everything you can do in a physical classroom,
-          <span style={{ color: "#00CBB8" }}>you can do with TOTC</span>
+          {data.title}
+          <span style={{ color: "#00CBB8" }}>{data.allocation}</span>
         </Typography>
         <p
           style={{
@@ -44,9 +45,7 @@ const EverythingYouCan = () => {
             lineHeight: "43.2px",
           }}
         >
-          TOTC’s school management software helps traditional and online schools
-          manage scheduling, attendance, payments and virtual classrooms all in
-          one secure cloud-based system.
+          {data.description}
         </p>
         <Typography
           sx={{
@@ -68,12 +67,12 @@ const EverythingYouCan = () => {
         <CardMedia
           component="video"
           alt="video"
-          image="/videos/mainVideo.mp4"
+          image={data.video}
           title="video"
           type="video/mp4"
           muted={false}
           autoPlay={false}
-          poster="/images/confident-teacher.png"
+          poster={data.poster}
           controls
           height="auto"
           width="auto"
