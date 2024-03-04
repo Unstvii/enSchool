@@ -9,11 +9,3 @@ export async function loginUser(values) {
 export async function registerUser(values) {
   return await axios.post(`${API_URL}/register`, values);
 }
-
-export async function getCourses(values) {
-  return await axios.get(`${API_URL}/courses?category=${values}`);
-}
-
-export async function getCourse(values) {
-  return await axios.get(`${API_URL}/courses/${values}`);
-}
