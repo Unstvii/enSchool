@@ -25,17 +25,20 @@ const TopEducationItem = ({ carouselData, carouselType }) => {
   const clicki = () => {
     console.log(carouselData);
   };
+
   useEffect(() => {
-    if (window.innerWidth <= 1650 && window.innerWidth >= 1251) {
-      setSlidesValue(1, 3);
+    if (typeof window !== "undefined") {
+      if (window.innerWidth <= 1650 && window.innerWidth >= 1251) {
+        setSlidesValue(1, 3);
+      }
+      if (window.innerWidth <= 1250 && window.innerWidth >= 851) {
+        setSlidesValue(1, 2);
+      }
+      if (window.innerWidth <= 850 && window.innerWidth >= 200) {
+        setSlidesValue(1, 1);
+      }
     }
-    if (window.innerWidth <= 1250 && window.innerWidth >= 851) {
-      setSlidesValue(1, 2);
-    }
-    if (window.innerWidth <= 850 && window.innerWidth >= 200) {
-      setSlidesValue(1, 1);
-    }
-  }, [window.innerWidth]);
+  }, []);
 
   const [disabledButton, setDisabledButton] = useState({
     prevButton: true,
@@ -47,8 +50,14 @@ const TopEducationItem = ({ carouselData, carouselType }) => {
     next: "swiper-button-next-" + carouselType,
   };
 
-  const prevButton = document.getElementsByClassName(swiperButtons.prev);
-  const nextButton = document.getElementsByClassName(swiperButtons.next);
+  const prevButton =
+    typeof document !== "undefined"
+      ? document.getElementsByClassName(swiperButtons.prev)
+      : " ";
+  const nextButton =
+    typeof document !== "undefined"
+      ? document.getElementsByClassName(swiperButtons.next)
+      : " ";
 
   const handleRight = () => {
     if (nextButton[0].className.includes("swiper-button-disabled")) {
