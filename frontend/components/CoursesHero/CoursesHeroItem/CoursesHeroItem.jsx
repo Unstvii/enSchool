@@ -22,24 +22,29 @@ const CustomCarouselItem = ({ choiseData }) => {
     prevSlides.slides = slidesPerView;
     setSlides(prevSlides);
   };
+
   useEffect(() => {
-    if (window.innerWidth <= 1350 && window.innerWidth >= 1001) {
-      setSlidesValue(1, 2);
+    if (typeof window !== "undefined") {
+      if (window.innerWidth <= 1350 && window.innerWidth >= 1001) {
+        setSlidesValue(1, 2);
+      }
+      if (window.innerWidth <= 1000 && window.innerWidth >= 200) {
+        setSlidesValue(1, 1);
+      }
     }
-    if (window.innerWidth <= 1000 && window.innerWidth >= 200) {
-      setSlidesValue(1, 1);
-    }
-  }, [window.innerWidth]);
+  }, []);
   const [disabledButton, setDisabledButton] = useState({
     prevButton: true,
     nextButton: false,
   });
-  const prevButton = document.getElementsByClassName(
-    "swiper-button-prev-custom"
-  );
-  const nextButton = document.getElementsByClassName(
-    "swiper-button-next-custom"
-  );
+  const prevButton =
+    typeof document !== "undefined"
+      ? document.getElementsByClassName("swiper-button-prev-custom")
+      : " ";
+  const nextButton =
+    typeof document !== "undefined"
+      ? document.getElementsByClassName("swiper-button-next-custom")
+      : " ";
 
   const handleRight = () => {
     if (nextButton[0].className.includes("swiper-button-disabled")) {
