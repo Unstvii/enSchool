@@ -6,15 +6,20 @@ import { loginUser, registerUser } from "../../api/register";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { loginSchema, registerSchema } from "../../utility/validationSchemas";
-function LoginForm({ isLoginForm, setIsLoginForm }) {
-  const validationSchema = isLoginForm ? loginSchema : registerSchema;
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+function LoginForm({ activeButton, setActiveButton }) {
+  const validationSchema = activeButton.login ? loginSchema : registerSchema;
 
   const handlePasswordClick = () => {
     setShowPassword(!showPassword);
   };
-  const handleLoginClick = () => {
-    setIsLoginForm(!isLoginForm);
-  };
+  // const handleLoginClick = () => {
+  //   setActiveButton({
+  //     login: true,
+  //     register: false,
+  //   });
+  // };
   const [showPassword, setShowPassword] = useState(false);
   return (
     <div>
@@ -30,7 +35,7 @@ function LoginForm({ isLoginForm, setIsLoginForm }) {
           console.log(values);
 
           try {
-            const response = isLoginForm
+            const response = activeButton.login
               ? await loginUser(values)
               : await registerUser(values);
             console.log(response.data);
@@ -54,7 +59,7 @@ function LoginForm({ isLoginForm, setIsLoginForm }) {
             className={styles.form__error}
           />
 
-          {!isLoginForm && (
+          {!activeButton.login && (
             <>
               <label htmlFor="nickname">Username</label>
               <Field
@@ -73,23 +78,19 @@ function LoginForm({ isLoginForm, setIsLoginForm }) {
           <label htmlFor="password">Password</label>
           <Field
             name="password"
-            placeholder="Min 8 chars"
+            placeholder="Enter your Password"
             type={showPassword ? "text" : "password"}
           />
           <div className={styles.form__eyeContainer}>
             {showPassword ? (
-              <img
-                className={styles.form__eyeIcon}
-                src="https://static.thenounproject.com/png/4334035-200.png"
+              <VisibilityIcon
                 onClick={handlePasswordClick}
-                alt="eye icon"
+                className={styles.form__eyeIcon}
               />
             ) : (
-              <img
-                className={styles.form__eyeIcon}
-                src="https://static-00.iconduck.com/assets.00/eye-password-hide-icon-512x512-iv45hct9.png"
+              <VisibilityOffIcon
                 onClick={handlePasswordClick}
-                alt="eye icon"
+                className={styles.form__eyeIcon}
               />
             )}
           </div>
@@ -98,7 +99,7 @@ function LoginForm({ isLoginForm, setIsLoginForm }) {
             component="div"
             className={styles.form__error}
           />
-          {!isLoginForm && (
+          {!activeButton.login && (
             <label className={styles.form__privacy}>
               <Field type="checkbox" name="checkbox" />I agree to the
               <a href="#">Terms & Privacy</a>
@@ -109,9 +110,25 @@ function LoginForm({ isLoginForm, setIsLoginForm }) {
               />
             </label>
           )}
+          {activeButton.login && (
+            <div className={styles.form__remember}>
+              <label>
+                <Field type="checkbox" name="checkbox" />
+                <span>Remember me</span>
+              </label>
+              <ErrorMessage
+                name="checkbox"
+                component="div"
+                className={styles.form__error}
+              />
 
-          <button type="submit">{isLoginForm ? "Login" : "Register"}</button>
-          {isLoginForm ? (
+              <p className={styles.form__forgot}>Forgot Password?</p>
+            </div>
+          )}
+          <button type="submit">
+            {activeButton.login ? "Login" : "Register"}
+          </button>
+          {/* {activeButton.login ? (
             <p>
               Don't have an account?
               <span
@@ -131,7 +148,7 @@ function LoginForm({ isLoginForm, setIsLoginForm }) {
                 Login
               </span>
             </p>
-          )}
+          )} */}
         </Form>
       </Formik>
       <ToastContainer />

@@ -13,6 +13,7 @@ import Button from "@mui/material/Button";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import HeaderItem from "../HeaderItem/HeaderItem";
 import { makeStyles } from "@mui/styles";
+import CustomForm from "../CustomForm/CustomForm";
 
 const useStyles: any = makeStyles({
   LoginButton: {
@@ -29,8 +30,13 @@ const useStyles: any = makeStyles({
   },
 });
 const Header = ({ isMainPage }: any) => {
-  const classes = useStyles();
+  const [activeButton, setActiveButton] = useState({
+    login: false,
+    register: true,
+  });
 
+  const classes = useStyles();
+  const [isFormOpen, setIsFormOpen] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   let isLargeScreen = true;
   isLargeScreen = useMediaQuery("(min-width:1200px)");
@@ -41,6 +47,20 @@ const Header = ({ isMainPage }: any) => {
 
   const handleDrawerClose = () => {
     setIsDrawerOpen(false);
+  };
+  const handleRegisterFormOpen = () => {
+    setActiveButton({
+      login: false,
+      register: true,
+    });
+    setIsFormOpen(true);
+  };
+  const handleLoginFormOpen = () => {
+    setActiveButton({
+      login: true,
+      register: false,
+    });
+    setIsFormOpen(true);
   };
 
   const menuItems = (
@@ -93,12 +113,13 @@ const Header = ({ isMainPage }: any) => {
         />
       </ListItem>
       <ListItem
-        component={Link}
-        href="/login"
-        passHref
+        // component={Link}
+        // href="/login"
+        // passHref
         onClick={handleDrawerClose}
       >
         <Button
+          onClick={handleLoginFormOpen}
           sx={{
             color: "#5B5B5B",
             background: "#FFFFFF",
@@ -116,12 +137,13 @@ const Header = ({ isMainPage }: any) => {
         </Button>
       </ListItem>
       <ListItem
-        component={Link}
-        href="/register"
-        passHref
+        // component={Link}
+        // href="/register"
+        // passHref
         onClick={handleDrawerClose}
       >
         <Button
+          onClick={handleRegisterFormOpen}
           variant="contained"
           sx={{
             color: "#FFFFFF",
@@ -141,69 +163,79 @@ const Header = ({ isMainPage }: any) => {
   );
 
   return (
-    <AppBar
-      position="static"
-      sx={{
-        bgcolor: isMainPage ? "#49BBBD" : "#FFFFFF",
-        padding: "16px 0px 16px 0px",
-      }}
-    >
-      <Box
+    <>
+      <AppBar
+        position="static"
         sx={{
-          width: "90%",
-          ml: "10%",
           bgcolor: isMainPage ? "#49BBBD" : "#FFFFFF",
+          padding: "16px 0px 16px 0px",
         }}
       >
-        <Toolbar>
-          <Box sx={{ flexGrow: 1 }}>
-            <Typography
-              variant="h6"
-              component={Link}
-              href="/"
-              passHref
-              sx={{
-                textDecoration: "none",
-                color: isMainPage ? "#FFFFFF" : "#5B5B5B",
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <img
-                src="/path/to/logo.png"
-                alt="Logo"
-                style={{ marginRight: "8px" }}
-              />
-              LOGO TITLE
-            </Typography>
-          </Box>
-          {isLargeScreen ? (
-            menuItems
-          ) : (
-            <Box sx={{ display: "flex" }}>
-              <IconButton
-                size="large"
-                edge="end"
-                color={isMainPage ? "inherit" : "default"}
-                aria-label="menu"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleDrawerOpen}
+        <Box
+          sx={{
+            width: "90%",
+            ml: "10%",
+            bgcolor: isMainPage ? "#49BBBD" : "#FFFFFF",
+          }}
+        >
+          <Toolbar>
+            <Box sx={{ flexGrow: 1 }}>
+              <Typography
+                variant="h6"
+                component={Link}
+                href="/"
+                passHref
+                sx={{
+                  textDecoration: "none",
+                  color: isMainPage ? "#FFFFFF" : "#5B5B5B",
+                  display: "flex",
+                  alignItems: "center",
+                }}
               >
-                <MenuIcon />
-              </IconButton>
-              <Drawer
-                anchor="left"
-                open={isDrawerOpen}
-                onClose={handleDrawerClose}
-              >
-                {menuItems}
-              </Drawer>
+                <img
+                  src="/path/to/logo.png"
+                  alt="Logo"
+                  style={{ marginRight: "8px" }}
+                />
+                LOGO TITLE
+              </Typography>
             </Box>
-          )}
-        </Toolbar>
-      </Box>
-    </AppBar>
+            {isLargeScreen ? (
+              menuItems
+            ) : (
+              <Box sx={{ display: "flex" }}>
+                <IconButton
+                  size="large"
+                  edge="end"
+                  color={isMainPage ? "inherit" : "default"}
+                  aria-label="menu"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleDrawerOpen}
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Drawer
+                  anchor="left"
+                  open={isDrawerOpen}
+                  onClose={handleDrawerClose}
+                >
+                  {menuItems}
+                </Drawer>
+              </Box>
+            )}
+          </Toolbar>
+        </Box>
+      </AppBar>
+      {isFormOpen ? (
+        <CustomForm
+          activeButton={activeButton}
+          setActiveButton={setActiveButton}
+        />
+      ) : (
+        " "
+      )}
+    </>
   );
 };
 

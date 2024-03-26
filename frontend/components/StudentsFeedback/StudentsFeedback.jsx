@@ -6,9 +6,9 @@ const StudentsFeedback = ({ StudentsFeedbackData }) => {
   return (
     <Grid
       sx={{
-        background: "none",
+        background: "#EBF5FF",
         width: "100%",
-        pb: "50px",
+        pb: "200px",
       }}
     >
       <Grid sx={{ width: "90%", margin: "0 auto" }}>

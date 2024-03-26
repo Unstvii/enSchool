@@ -1,29 +1,39 @@
 .form{
     display: flex;
     flex-direction: column;
+    position: relative;
+
     & input{
         margin-top: 10px;
-        background-color: #2b2b2b;
-        border: 1px solid #353137;
-        border-radius: 6px;
-        padding: 14px;
-        color: white;
+        background-color: #FFFFFF;
+        border: 1px solid #49BBBD;
+        border-radius: 40px;
+        padding: 14px 14px 14px 31px;
+        color: #ACACAC;
+        font-size: 15px;
+        font-weight: 300;
+        max-width: 430px;
+        width:100%;
     }
     & label{
-        margin-top: 20px;
+        margin-top: 30px;
+        font-size: 16px;
+        font-weight: 400;
+        color:#000000;
     }
     & button{
         cursor: pointer;
-        font-size: 18px;
-        color: white;
-        border: none;
-        padding: 20px;
-        border-radius: 8px;
-        margin-top: 25px;
-        background: hsla(259, 84%, 78%, 1);
-        background: linear-gradient(90deg, hsla(259, 84%, 78%, 1) 0%, hsla(206, 67%, 75%, 1) 100%);
-        background: -moz-linear-gradient(90deg, hsla(259, 84%, 78%, 1) 0%, hsla(206, 67%, 75%, 1) 100%); 
-        background: -webkit-linear-gradient(90deg, hsla(259, 84%, 78%, 1) 0%, hsla(206, 67%, 75%, 1) 100%); 
+        color:#FFFFFF;
+        background: #49BBBD;
+        font-size: 16px;
+        width:232px;
+        height:49px;
+        border:none;
+        border-radius: 36px;
+        position: absolute;
+        right:0;
+        bottom: -115px;
+
     }
     &__privacy{
         font-size: 15px;
@@ -36,7 +46,39 @@
         margin-right: 12px;
         cursor: pointer;
     }
-
+    &__remember{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 15px;
+        color:#000000;
+        font-weight: 300;
+    }
+    &__remember input{
+        width: 23px;
+        height: 23px;
+        transform: translateY(0px);
+       
+        cursor: pointer;
+    }
+    &__remember label{
+       display: flex;
+       align-items: center;
+        white-space: nowrap;
+        margin-top: 10px;
+        gap:7px;
+        cursor: pointer;
+    }
+    &__remember label span {
+        transform: translateY(3px);
+        font-size: 12px;
+    
+    }
+    &__forgot{
+        transform: translateY(7px);
+        font-size: 12px;
+        cursor: pointer;
+    }
     &__member{
         font-size: 15px;
        margin: 0 auto;
@@ -51,8 +93,8 @@
     &__eyeIcon{
         width: 20px;
         position: absolute;
-        right: 10px;
-        top: -30px;
+        right: 15px;
+        top: -35px;
     }
 
        &__privacy a, &__switchText{

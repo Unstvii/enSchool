@@ -1,22 +1,58 @@
 import React from "react";
-import styles from "./RightLoginSide.module.scss";
-import SocialLogin from "../SocialLogin/SocialLogin";
 import LoginForm from "../LoginForm/LoginForm";
-const RightLoginSide = ({ isLoginForm, setIsLoginForm }) => {
+import { Grid, Typography } from "@mui/material";
+import ToggleForm from "../ToggleForm/ToggleForm";
+
+const RightLoginSide = ({ activeButton, setActiveButton }) => {
   return (
-    <div>
-      <div className={styles.RightLoginSide}>
-        <h3>Get Started Now</h3>
-        <p>Enter your credentials to access your account</p>
-        <SocialLogin />
-        <div className={styles.RightLoginSide__Or}>
-          <hr />
-          <span>or</span>
-          <hr />
-        </div>
-        <LoginForm isLoginForm={isLoginForm} setIsLoginForm={setIsLoginForm} />
-      </div>
-    </div>
+    <Grid
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        transform: "translateY(-60px)",
+      }}
+    >
+      <Grid>
+        <Typography
+          sx={{
+            fontSize: "16px",
+            fontWeight: 400,
+            color: "#000000",
+            textAlign: "center",
+          }}
+        >
+          Welcome to lorem..!
+        </Typography>
+        <Grid
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            margin: "24px 0px 50px 0px",
+          }}
+        >
+          <ToggleForm
+            activeButton={activeButton}
+            setActiveButton={setActiveButton}
+          />
+        </Grid>
+        <Typography
+          sx={{
+            fontSize: "16px",
+            fontWeight: 400,
+            color: "#5B5B5B",
+            textAlign: "left",
+          }}
+        >
+          Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry.
+        </Typography>
+        <LoginForm
+          activeButton={activeButton}
+          setActiveButton={setActiveButton}
+        />
+      </Grid>
+    </Grid>
   );
 };
 
