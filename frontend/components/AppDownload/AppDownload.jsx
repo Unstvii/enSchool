@@ -14,6 +14,7 @@ const AppDownload = () => {
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "#252641",
+        transform: "translateY(-115px)",
       }}
     >
       <Grid
