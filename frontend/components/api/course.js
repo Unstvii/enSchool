@@ -9,3 +9,6 @@ export async function getCourses(values) {
 export async function getCourse(values) {
   return await axios.get(`${API_URL}/courses/${values}`);
 }
+export async function postFeedback(values) {
+  return await axios.post(`${API_URL}/courses/feedback`, values);
+}

@@ -33,6 +33,30 @@ func courseCreateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+func feedbackCreateHandler(w http.ResponseWriter, r *http.Request) {
+
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	fmt.Fprintln(w, "Hello from create course page !")
+
+	var feedback Feedback
+
+	if err := json.NewDecoder(r.Body).Decode(&feedback); err != nil {
+		fmt.Println("Error in unpackign json", err)
+		return
+	}
+
+	atlasConnect("FEEDBACK_COLLECTION")
+	ctx, cancel := context.WithCancel(context.Background())
+
+	defer cancel()
+	_, err := collection.InsertOne(ctx, feedback)
+
+	if err != nil {
+		http.Error(w, "Error inserting user into database", http.StatusInternalServerError)
+		return
+	}
+}
 
 func coursesGetHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
