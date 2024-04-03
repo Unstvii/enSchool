@@ -15,3 +15,9 @@ export const registerSchema = Yup.object().shape({
     .required("Password is required"),
   checkbox: Yup.bool().oneOf([true], "Agree to the terms and privacy required"),
 });
+
+export const feedbackSchema = Yup.object().shape({
+  nickname: Yup.string().required("Nickname is required"),
+  feedback: Yup.string(),
+  rate: Yup.number(),
+});

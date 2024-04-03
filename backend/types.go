@@ -22,3 +22,10 @@ type Course struct {
 	Author      string             `json:"author"`
 	AuthorIcon  string             `json:"authorIcon"`
 }
+
+type Feedback struct {
+	Nickname string `json:"nickname"`
+	Feedback string `json:"feedback"`
+	Rating   int16  `json:"rating"`
+	Date     string `json:"date"`
+}
