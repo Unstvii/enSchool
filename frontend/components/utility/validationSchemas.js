@@ -20,4 +20,5 @@ export const feedbackSchema = Yup.object().shape({
   nickname: Yup.string().required("Nickname is required"),
   feedback: Yup.string(),
   rate: Yup.number(),
+  courseid: Yup.string(),
 });

@@ -3,9 +3,9 @@ import { Grid, Typography, Rating } from "@mui/material";
 import Image from "next/image";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
-const Feedback = ({ author, rate, image, date, title }) => {
+const Feedback = ({ author, rate, image, date, title, index }) => {
   return (
-    <Grid mt="20px">
+    <Grid mt="20px" key={index}>
       <Grid sx={{ display: "flex", justifyContent: "space-between" }}>
         <Grid
           sx={{

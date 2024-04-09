@@ -53,7 +53,10 @@ const useStyles = makeStyles({
   },
 });
 
-const Overview = ({ course }) => {
+const Overview = ({ course, feedbacks }) => {
+  const currentURL = window.location.href;
+  const urlPart = currentURL.split("/").pop();
+
   const [value, setValue] = useState("1");
 
   const handleChange = (event, newValue) => {
@@ -229,35 +232,33 @@ const Overview = ({ course }) => {
                     </Grid>
                   </Grid>
                   <Grid sx={{ mt: "70px" }}>
-                    <Feedback
-                      author="Lina"
-                      date={3}
-                      rate={5}
-                      title="Class, launched less than a year ago by Blackboard co-founder Michael Chasen, integrates exclusively..."
-                      image="https://images.unsplash.com/photo-1573496774379-b930dba17d8b?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                    />
-                    <Box
-                      sx={{
-                        width: "100%",
-                        height: "1px",
-                        background: "#696984",
-                        opacity: "0.5",
-                        margin: "24px 0px 24px 0px",
-                      }}
-                    ></Box>
-                    <Feedback
-                      author="Jane"
-                      date={1}
-                      rate={3}
-                      title="Class, launched less than a year ago by Blackboard co-founder Michael Chasen, integrates exclusively..."
-                      image="https://images.unsplash.com/photo-1573496774379-b930dba17d8b?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                    />
+                    {feedbacks.map((item, index) => (
+                      <>
+                        <Feedback
+                          author="Lina"
+                          index={index}
+                          date={2}
+                          rate={item.rating}
+                          title={item.feedback}
+                          image="https://images.unsplash.com/photo-1573496774379-b930dba17d8b?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                        />
+                        <Box
+                          sx={{
+                            width: "100%",
+                            height: "1px",
+                            background: "#696984",
+                            opacity: "0.5",
+                            margin: "24px 0px 24px 0px",
+                          }}
+                        ></Box>
+                      </>
+                    ))}
                   </Grid>
                 </Grid>
               </TabPanel>
               <TabPanel value="2">
                 <Grid sx={{ width: "100%", background: "red" }}>
-                  <Formik
+                  {/* <Formik
                     initialValues={{
                       nickname: "",
                       feedback: "",
@@ -307,6 +308,67 @@ const Overview = ({ course }) => {
 
                       <button type="submit">Submit</button>
                     </Form>
+                  </Formik> */}
+                  <Formik
+                    initialValues={{
+                      nickname: "",
+                      feedback: "",
+                      courseid: urlPart,
+                    }}
+                    validationSchema={feedbackSchema}
+                    onSubmit={async (values) => {
+                      console.log(values);
+
+                      try {
+                        const response = await postFeedback(values);
+                        console.log(response.data);
+                      } catch (err) {
+                        toast.error("connection error!", {
+                          position: toast.POSITION.TOP_LEFT,
+                        });
+                      }
+                    }}
+                  >
+                    {({ values, setFieldValue }) => (
+                      <Form>
+                        <label htmlFor="nickname">nickname</label>
+                        <Field
+                          name="nickname"
+                          placeholder="Enter your nickname"
+                          type="text"
+                        />
+                        <ErrorMessage
+                          name="nickname"
+                          component="div"
+                          className={styles.form__error}
+                        />
+                        <>
+                          <label htmlFor="feedback">Feedback</label>
+                          <Field
+                            name="feedback"
+                            placeholder="Enter your feedback"
+                            type="text"
+                          />
+                          <ErrorMessage
+                            name="feedback"
+                            component="div"
+                            className={styles.form__error}
+                          />
+                        </>
+                        <Field name="rating">
+                          {({ field }) => (
+                            <Rating
+                              {...field}
+                              value={values.rating}
+                              onChange={(event, newValue) => {
+                                setFieldValue("rating", newValue);
+                              }}
+                            />
+                          )}
+                        </Field>
+                        <button type="submit">Submit</button>
+                      </Form>
+                    )}
                   </Formik>
                   <ToastContainer />
                 </Grid>

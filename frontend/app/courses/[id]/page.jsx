@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getCourse } from "@/components/api/course";
+import { getCourse, getFeedbacks } from "@/components/api/course";
 import CourseDetails from "../../../components/CourseDetails/CourseDetails";
 import CustomCarousel from "@/components/CustomCarousel/CustomCarousel";
 import CustomCarouselData from "../../../components/CustomCarousel/CustomCarouselData";
@@ -15,7 +15,7 @@ function Page() {
   const pathSegments = pathname.split("/").filter(Boolean);
   const id = pathSegments[pathSegments.length - 1];
   const [course, setCourse] = useState([]);
-
+  const [feedbacks, setFeedbacks] = useState([]);
   useEffect(() => {
     const fetchCourse = async () => {
       try {
@@ -25,13 +25,24 @@ function Page() {
         console.error("Помилка при отриманні даних", error);
       }
     };
+    const fetchFeedback = async () => {
+      try {
+        console.log(id);
+        const response = await getFeedbacks(id);
+        setFeedbacks(response.data);
+      } catch (error) {
+        console.error("Помилка при отриманні даних", error);
+      }
+    };
 
     fetchCourse();
+    fetchFeedback();
+    console.log(feedbacks);
   }, []);
 
   return (
     <>
-      <CourseDetails course={course} />
+      <CourseDetails course={course} feedbacks={feedbacks} />
       <CustomCarousel
         title="Marketing Articles"
         link="#"
