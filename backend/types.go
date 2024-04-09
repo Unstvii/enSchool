@@ -25,7 +25,8 @@ type Course struct {
 
 type Feedback struct {
 	Nickname string `json:"nickname"`
+	CourseID string `json:"courseid"`
 	Feedback string `json:"feedback"`
 	Rating   int16  `json:"rating"`
-	Date     string `json:"date"`
+	// Date     string `json:"date"`
 }
