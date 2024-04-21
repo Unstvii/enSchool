@@ -27,8 +27,11 @@ function Page() {
     };
     const fetchFeedback = async () => {
       try {
-        console.log(id);
         const response = await getFeedbacks(id);
+        if (response.data === null) {
+          setFeedbacks([]);
+          return;
+        }
         setFeedbacks(response.data);
       } catch (error) {
         console.error("Помилка при отриманні даних", error);

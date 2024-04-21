@@ -30,3 +30,7 @@ type Feedback struct {
 	Rating   int16  `json:"rating"`
 	// Date     string `json:"date"`
 }
+type FeedbackResponse struct {
+	Feedbacks []Feedback  `json:"feedbacks"`
+	Rating    map[int]int `json:"rating"`
+}

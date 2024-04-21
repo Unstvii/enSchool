@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Grid, Typography, Rating, Slider, Box } from "@mui/material";
 import Feedback from "../Feedback/Feedback";
 import { makeStyles } from "@mui/styles";
@@ -54,8 +54,13 @@ const useStyles = makeStyles({
 });
 
 const Overview = ({ course, feedbacks }) => {
-  const currentURL = window.location.href;
-  const urlPart = currentURL.split("/").pop();
+  const [urlPart, setCurrentURL] = useState("");
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const currentURL = window.location.href;
+      setCurrentURL(currentURL.split("/").pop());
+    }
+  }, []);
 
   const [value, setValue] = useState("1");
 
@@ -121,7 +126,7 @@ const Overview = ({ course, feedbacks }) => {
                 <Grid
                   sx={{
                     background: "#E2F0FF",
-                    width: "100%",
+                    width: "150%",
                     maxWidth: "950px",
                     borderRadius: "20px",
                     mt: "50px",
