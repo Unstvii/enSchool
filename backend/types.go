@@ -24,9 +24,9 @@ type Course struct {
 }
 
 type Feedback struct {
-	Nickname string `json:"nickname"`
-	CourseID string `json:"courseid"`
-	Feedback string `json:"feedback"`
-	Rating   int16  `json:"rating"`
-	// Date     string `json:"date"`
+    Nickname string `json:"nickname"`
+    CourseID string `json:"courseid"`
+    Review   string `json:"review"`
+    Rating   int16  `json:"rating"`
+    // Date string `json:"date"`
 }

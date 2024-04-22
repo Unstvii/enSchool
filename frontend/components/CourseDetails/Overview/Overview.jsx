@@ -53,7 +53,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Overview = ({ course, feedbacks }) => {
+const Overview = ({ course, feedbacks, ratingData }) => {
   const currentURL = window.location.href;
   const urlPart = currentURL.split("/").pop();
 
@@ -151,7 +151,7 @@ const Overview = ({ course, feedbacks }) => {
                           letterSpacing: "1px",
                         }}
                       >
-                        4 out of 5
+                        {ratingData.avgRating ? ratingData.avgRating :"5"} out of 5
                       </Typography>
                       <Rating name="read-only" value={4} readOnly />
 
@@ -220,7 +220,7 @@ const Overview = ({ course, feedbacks }) => {
                       </Grid>
                       <Grid className={classes.rateContainer}>
                         <Typography className={classes.statsTitle}>
-                          1 Stars
+                           1 Stars
                         </Typography>
                         <Slider
                           sx={{ maxWidth: "480px", color: "#49BBBD" }}
@@ -235,11 +235,11 @@ const Overview = ({ course, feedbacks }) => {
                     {feedbacks.map((item, index) => (
                       <>
                         <Feedback
-                          author="Lina"
+                          author={item.nickname}
                           index={index}
                           date={2}
                           rate={item.rating}
-                          title={item.feedback}
+                          title={item.review}
                           image="https://images.unsplash.com/photo-1573496774379-b930dba17d8b?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                         />
                         <Box

@@ -16,6 +16,10 @@ function Page() {
   const id = pathSegments[pathSegments.length - 1];
   const [course, setCourse] = useState([]);
   const [feedbacks, setFeedbacks] = useState([]);
+  const [ratingData, setRatingData] = useState({
+    avgRating: null,
+    ratingCounts: {},
+  });
   useEffect(() => {
     const fetchCourse = async () => {
       try {
@@ -27,9 +31,12 @@ function Page() {
     };
     const fetchFeedback = async () => {
       try {
-        console.log(id);
         const response = await getFeedbacks(id);
-        setFeedbacks(response.data);
+        setFeedbacks(response.data.reviews);
+        setRatingData({
+          avgRating: response.data.rating,
+          ratingCounts: response.data.rating_counts,
+        });
       } catch (error) {
         console.error("Помилка при отриманні даних", error);
       }
@@ -37,12 +44,11 @@ function Page() {
 
     fetchCourse();
     fetchFeedback();
-    console.log(feedbacks);
   }, []);
 
   return (
     <>
-      <CourseDetails course={course} feedbacks={feedbacks} />
+      <CourseDetails course={course} feedbacks={feedbacks} ratingData={ratingData}/>
       <CustomCarousel
         title="Marketing Articles"
         link="#"
