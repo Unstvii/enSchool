@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strconv"
+	// "strconv"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
@@ -45,13 +45,11 @@ func feedbackCreateHandler(w http.ResponseWriter, r *http.Request) {
 func feedbacksGetHandler(w http.ResponseWriter, r *http.Request) {
     w.Header().Set("Access-Control-Allow-Origin", "*")
     w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-
     courseID := r.URL.Query().Get("courseID")
     if courseID == "" {
         http.Error(w, "Категорія не вказана", http.StatusBadRequest)
         return
     }
-
     atlasConnect("FEEDBACK_COLLECTION")
     ctx, cancel := context.WithCancel(context.Background())
     defer cancel()
@@ -60,7 +58,7 @@ func feedbacksGetHandler(w http.ResponseWriter, r *http.Request) {
     ratingPipeline := []bson.M{
         {"$match": bson.M{"courseid": courseID}},
         {"$group": bson.M{
-            "_id":     nil,
+            "_id": nil,
             "reviews": bson.M{"$push": bson.M{"nickname": "$nickname", "review": "$review", "rating": "$rating"}},
             "avgRating": bson.M{"$avg": "$rating"},
         }},
@@ -70,7 +68,7 @@ func feedbacksGetHandler(w http.ResponseWriter, r *http.Request) {
     countPipeline := []bson.M{
         {"$match": bson.M{"courseid": courseID}},
         {"$group": bson.M{
-            "_id":   "$rating",
+            "_id": "$rating",
             "count": bson.M{"$sum": 1},
         }},
     }
@@ -101,23 +99,21 @@ func feedbacksGetHandler(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    // Об'єднання результатів двох агрегацій
-    result := bson.M{
-        "reviews":      ratingResult[0]["reviews"],
-        "rating": ratingResult[0]["avgRating"],
-        "rating_counts": bson.M{},
-    }
-
+    // Створення об'єкта result
+    result := make(map[string]interface{})
+    result["reviews"] = ratingResult[0]["reviews"]
+    result["rating"] = ratingResult[0]["avgRating"]
+    ratingCounts := make([]map[string]int, 5)
     for _, count := range countResult {
         rating := int(count["_id"].(int32))
-        result["rating_counts"].(bson.M)[strconv.Itoa(rating)] = count["count"]
+        ratingCounts[rating-1] = map[string]int{"rating": rating, "count": int(count["count"].(int32))}
     }
+    result["rating_counts"] = ratingCounts
 
     courseJSON, err := json.Marshal(result)
     if err != nil {
         http.Error(w, "Помилка при серіалізації об'єкта", http.StatusInternalServerError)
         return
     }
-
     w.Write(courseJSON)
 }

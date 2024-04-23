@@ -13,10 +13,39 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { feedbackSchema } from "../../utility/validationSchemas";
 import styles from "./Overview.scss";
+import RatingBar from "../../RatingBar/RatingBar";
 
 const useStyles = makeStyles({
   tabIndicator: {
     height: 0,
+  },
+
+  customFromWrapper: {
+    background: "#E2F0FF",
+    borderRadius: "20px",
+    height: "450px",
+  },
+  customForm: {
+    width: "90%",
+    margin: "0 auto",
+    display: "flex",
+    flexDirection: "column",
+    gap: "20px",
+  },
+  customFormItem: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "6px",
+  },
+  customFormButton: {
+    width: "160px",
+    fontSize: "16px",
+    fontWeight: 500,
+    borderRadius: "8px",
+    height: "44px",
+    border: "none",
+    background: "#49BBBD",
+    color: "#FFFFFF",
   },
   customButton: {
     fontSize: "20px",
@@ -56,7 +85,7 @@ const useStyles = makeStyles({
 const Overview = ({ course, feedbacks, ratingData }) => {
   const currentURL = window.location.href;
   const urlPart = currentURL.split("/").pop();
-
+  console.log(ratingData);
   const [value, setValue] = useState("1");
 
   const handleChange = (event, newValue) => {
@@ -151,7 +180,8 @@ const Overview = ({ course, feedbacks, ratingData }) => {
                           letterSpacing: "1px",
                         }}
                       >
-                        {ratingData.avgRating ? ratingData.avgRating :"5"} out of 5
+                        {ratingData.avgRating ? ratingData.avgRating : "5"} out
+                        of 5
                       </Typography>
                       <Rating name="read-only" value={4} readOnly />
 
@@ -174,61 +204,14 @@ const Overview = ({ course, feedbacks, ratingData }) => {
                         gap: "13px",
                       }}
                     >
-                      <Grid className={classes.rateContainer}>
-                        <Typography className={classes.statsTitle}>
-                          5 Stars
-                        </Typography>
-                        <Slider
-                          sx={{ maxWidth: "480px", color: "#49BBBD" }}
-                          step={1}
-                          max={100}
-                          value={80}
+                      {ratingData.ratingCounts.map((review, index) => (
+                        <RatingBar
+                          key={index}
+                          stars={index}
+                          allStars={ratingData.ratingCounts.length}
+                          count={review ? review.count : 0}
                         />
-                      </Grid>
-                      <Grid className={classes.rateContainer}>
-                        <Typography className={classes.statsTitle}>
-                          4 Stars
-                        </Typography>
-                        <Slider
-                          sx={{ maxWidth: "480px", color: "#49BBBD" }}
-                          step={1}
-                          max={100}
-                          value={10}
-                        />
-                      </Grid>
-                      <Grid className={classes.rateContainer}>
-                        <Typography className={classes.statsTitle}>
-                          3 Stars
-                        </Typography>
-                        <Slider
-                          sx={{ maxWidth: "480px", color: "#49BBBD" }}
-                          step={1}
-                          max={100}
-                          value={5}
-                        />
-                      </Grid>
-                      <Grid className={classes.rateContainer}>
-                        <Typography className={classes.statsTitle}>
-                          2 Stars
-                        </Typography>
-                        <Slider
-                          sx={{ maxWidth: "480px", color: "#49BBBD" }}
-                          step={1}
-                          max={100}
-                          value={3}
-                        />
-                      </Grid>
-                      <Grid className={classes.rateContainer}>
-                        <Typography className={classes.statsTitle}>
-                           1 Stars
-                        </Typography>
-                        <Slider
-                          sx={{ maxWidth: "480px", color: "#49BBBD" }}
-                          step={1}
-                          max={100}
-                          value={3}
-                        />
-                      </Grid>
+                      ))}
                     </Grid>
                   </Grid>
                   <Grid sx={{ mt: "70px" }}>
@@ -257,62 +240,15 @@ const Overview = ({ course, feedbacks, ratingData }) => {
                 </Grid>
               </TabPanel>
               <TabPanel value="2">
-                <Grid sx={{ width: "100%", background: "red" }}>
-                  {/* <Formik
-                    initialValues={{
-                      nickname: "",
-                      feedback: "",
-                      rate: 1,
-                    }}
-                    validationSchema={feedbackSchema}
-                    onSubmit={async (values) => {
-                      console.log(values);
-                      alert("clicked");
-                      try {
-                        const response = await postFeedback(values);
-                        console.log(response.data);
-                      } catch (err) {
-                        toast.error("connection error!", {
-                          position: toast.POSITION.TOP_LEFT,
-                        });
-                      }
-                    }}
-                  >
-                    <Form className={styles.form}>
-                      <label htmlFor="nickname">nickname</label>
-                      <Field
-                        name="nickname"
-                        placeholder="Enter your nickname"
-                        type="text"
-                      />
-                      <ErrorMessage
-                        name="nickname"
-                        component="div"
-                        className={styles.form__error}
-                      />
-
-                      <>
-                        <label htmlFor="feedback">Feedback</label>
-                        <Field
-                          name="feedback"
-                          placeholder="Enter your feedback"
-                          type="text"
-                        />
-                        <ErrorMessage
-                          name="feedback"
-                          component="div"
-                          className={styles.form__error}
-                        />
-                      </>
-                      <Field name="rating" component={Rating} size="large" />
-
-                      <button type="submit">Submit</button>
-                    </Form>
-                  </Formik> */}
+                <Grid
+                  sx={{
+                    width: "100%",
+                  }}
+                >
                   <Formik
                     initialValues={{
                       nickname: "",
-                      feedback: "",
+                      review: "",
                       courseid: urlPart,
                     }}
                     validationSchema={feedbackSchema}
@@ -330,44 +266,57 @@ const Overview = ({ course, feedbacks, ratingData }) => {
                     }}
                   >
                     {({ values, setFieldValue }) => (
-                      <Form>
-                        <label htmlFor="nickname">nickname</label>
-                        <Field
-                          name="nickname"
-                          placeholder="Enter your nickname"
-                          type="text"
-                        />
-                        <ErrorMessage
-                          name="nickname"
-                          component="div"
-                          className={styles.form__error}
-                        />
-                        <>
-                          <label htmlFor="feedback">Feedback</label>
-                          <Field
-                            name="feedback"
-                            placeholder="Enter your feedback"
-                            type="text"
-                          />
-                          <ErrorMessage
-                            name="feedback"
-                            component="div"
-                            className={styles.form__error}
-                          />
-                        </>
-                        <Field name="rating">
-                          {({ field }) => (
-                            <Rating
-                              {...field}
-                              value={values.rating}
-                              onChange={(event, newValue) => {
-                                setFieldValue("rating", newValue);
-                              }}
+                      <div className={classes.customFromWrapper}>
+                        <Form className={classes.customForm}>
+                          {/* <div className={classes.customFormItem}> */}
+                          <label for="rating">Your Ratings</label>
+                          <Field name="rating">
+                            {({ field }) => (
+                              <Rating
+                                {...field}
+                                value={values.rating}
+                                onChange={(event, newValue) => {
+                                  setFieldValue("rating", newValue);
+                                }}
+                              />
+                            )}
+                          </Field>
+                          {/* </div> */}
+                          <div className={classes.customFormItem}>
+                            <label htmlFor="nickname">Your nickname</label>
+                            <Field
+                              name="nickname"
+                              placeholder="Enter your nickname"
+                              type="text"
                             />
-                          )}
-                        </Field>
-                        <button type="submit">Submit</button>
-                      </Form>
+                            <ErrorMessage
+                              name="nickname"
+                              component="div"
+                              className={styles.form__error}
+                            />
+                          </div>
+                          <div className={classes.customFormItem}>
+                            <label htmlFor="review">Comments</label>
+                            <Field
+                              name="review"
+                              placeholder="Enter your feedback"
+                              type="text"
+                            />
+                            <ErrorMessage
+                              name="review"
+                              component="div"
+                              className={styles.form__error}
+                            />
+                          </div>
+
+                          <button
+                            type="submit"
+                            className={classes.customFormButton}
+                          >
+                            Submit Ratings
+                          </button>
+                        </Form>
+                      </div>
                     )}
                   </Formik>
                   <ToastContainer />

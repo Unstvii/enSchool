@@ -18,7 +18,7 @@ function Page() {
   const [feedbacks, setFeedbacks] = useState([]);
   const [ratingData, setRatingData] = useState({
     avgRating: null,
-    ratingCounts: {},
+    ratingCounts: [{ null: null }],
   });
   useEffect(() => {
     const fetchCourse = async () => {
@@ -48,7 +48,11 @@ function Page() {
 
   return (
     <>
-      <CourseDetails course={course} feedbacks={feedbacks} ratingData={ratingData}/>
+      <CourseDetails
+        course={course}
+        feedbacks={feedbacks}
+        ratingData={ratingData}
+      />
       <CustomCarousel
         title="Marketing Articles"
         link="#"

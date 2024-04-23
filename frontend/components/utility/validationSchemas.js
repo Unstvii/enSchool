@@ -18,7 +18,7 @@ export const registerSchema = Yup.object().shape({
 
 export const feedbackSchema = Yup.object().shape({
   nickname: Yup.string().required("Nickname is required"),
-  feedback: Yup.string(),
+  review: Yup.string(),
   rate: Yup.number(),
   courseid: Yup.string(),
 });
