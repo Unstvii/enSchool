@@ -14,6 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { feedbackSchema } from "../../utility/validationSchemas";
 import styles from "./Overview.scss";
 import RatingBar from "../../RatingBar/RatingBar";
+import zIndex from "@mui/material/styles/zIndex";
 
 const useStyles = makeStyles({
   tabIndicator: {
@@ -23,7 +24,11 @@ const useStyles = makeStyles({
   customFromWrapper: {
     background: "#E2F0FF",
     borderRadius: "20px",
-    height: "450px",
+    minHeight: "450px",
+    height: "auto",
+    padding: "20px 0px 20px 0px",
+    display: "flex",
+    alignItems: "center",
   },
   customForm: {
     width: "90%",
@@ -46,6 +51,12 @@ const useStyles = makeStyles({
     border: "none",
     background: "#49BBBD",
     color: "#FFFFFF",
+    "&:hover": {
+      filter: "brightness(120%)",
+      boxShadow: "0 0 1px rgba(0, 0, 0, 0.5)",
+      transition: "all 0.3s ease",
+      cursor: "pointer",
+    },
   },
   customButton: {
     fontSize: "20px",
@@ -57,7 +68,13 @@ const useStyles = makeStyles({
     width: "200px",
     height: "63px",
     marginLeft: "30px",
+    "&:hover": {
+      filter: "brightness(90%)",
+      boxShadow: "0 0 1px rgba(0, 0, 0, 0.5)",
+      transition: "all 0.3s ease",
+    },
   },
+
   customActiveButton: {
     fontSize: "20px",
     fontWeight: 700,
@@ -104,13 +121,22 @@ const Overview = ({ course, feedbacks, ratingData }) => {
     >
       <Grid>
         <Grid sx={{ display: "flex", mt: "50px" }}>
-          <Box sx={{ width: "100%", typography: "body1", paddingLeft: "0px" }}>
+          <Box
+            sx={{
+              width: "100%",
+              typography: "body1",
+              paddingLeft: "0px",
+            }}
+          >
             <TabContext value={value}>
               <Box
                 sx={{
                   display: "flex",
                   justifyContent: "flex-start",
+
                   transform: "translateX(0px)",
+
+                  width: "850px",
                 }}
               >
                 <TabList
@@ -153,11 +179,10 @@ const Overview = ({ course, feedbacks, ratingData }) => {
                     width: "100%",
                     maxWidth: "950px",
                     borderRadius: "20px",
-                    mt: "50px",
                     padding: "50px",
                   }}
                 >
-                  <Grid sx={{ display: "flex" }}>
+                  <Grid sx={{ display: "flex", gap: "50px" }}>
                     <Grid
                       sx={{
                         background: "#FFFFFF",
@@ -180,10 +205,22 @@ const Overview = ({ course, feedbacks, ratingData }) => {
                           letterSpacing: "1px",
                         }}
                       >
-                        {ratingData.avgRating ? ratingData.avgRating : "5"} out
-                        of 5
+                        {ratingData.avgRating
+                          ? (Math.ceil(ratingData.avgRating * 2) / 2).toFixed(0)
+                          : "5"}
+                        <> </> out of 5
                       </Typography>
-                      <Rating name="read-only" value={4} readOnly />
+                      <Rating
+                        name="read-only"
+                        value={
+                          ratingData.avgRating
+                            ? (Math.ceil(ratingData.avgRating * 2) / 2).toFixed(
+                                0
+                              )
+                            : "5"
+                        }
+                        readOnly
+                      />
 
                       <Typography
                         sx={{
@@ -204,12 +241,13 @@ const Overview = ({ course, feedbacks, ratingData }) => {
                         gap: "13px",
                       }}
                     >
-                      {ratingData.ratingCounts.map((review, index) => (
+                      {ratingData.ratingCounts.map((rating, index) => (
                         <RatingBar
                           key={index}
-                          stars={index}
+                          stars={index + 1}
+                          initialCount={rating ? rating.count : 0}
                           allStars={ratingData.ratingCounts.length}
-                          count={review ? review.count : 0}
+                          ratingCounts={ratingData.ratingCounts}
                         />
                       ))}
                     </Grid>
@@ -268,26 +306,33 @@ const Overview = ({ course, feedbacks, ratingData }) => {
                     {({ values, setFieldValue }) => (
                       <div className={classes.customFromWrapper}>
                         <Form className={classes.customForm}>
-                          {/* <div className={classes.customFormItem}> */}
-                          <label for="rating">Your Ratings</label>
-                          <Field name="rating">
-                            {({ field }) => (
-                              <Rating
-                                {...field}
-                                value={values.rating}
-                                onChange={(event, newValue) => {
-                                  setFieldValue("rating", newValue);
-                                }}
-                              />
-                            )}
-                          </Field>
-                          {/* </div> */}
+                          <div className={classes.customFormItem}>
+                            <label htmlFor="rating">Your Ratings</label>
+                            <Field name="rating">
+                              {({ field }) => (
+                                <Rating
+                                  {...field}
+                                  value={values.rating}
+                                  style={{ width: "120px" }}
+                                  onChange={(event, newValue) => {
+                                    setFieldValue("rating", newValue);
+                                  }}
+                                />
+                              )}
+                            </Field>
+                          </div>
                           <div className={classes.customFormItem}>
                             <label htmlFor="nickname">Your nickname</label>
                             <Field
                               name="nickname"
                               placeholder="Enter your nickname"
                               type="text"
+                              style={{
+                                height: "28px",
+                                borderRadius: "5px",
+                                border: "1px solid silver",
+                                paddingLeft: "10px",
+                              }}
                             />
                             <ErrorMessage
                               name="nickname"
@@ -300,7 +345,15 @@ const Overview = ({ course, feedbacks, ratingData }) => {
                             <Field
                               name="review"
                               placeholder="Enter your feedback"
-                              type="text"
+                              component="textarea"
+                              style={{
+                                height: "120px",
+                                borderRadius: "5px",
+                                border: "1px solid silver",
+                                padding: "10px",
+                                boxSizing: "border-box",
+                                resize: "vertical", // Allow vertical resizing
+                              }}
                             />
                             <ErrorMessage
                               name="review"
