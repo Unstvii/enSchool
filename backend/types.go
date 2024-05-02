@@ -30,3 +30,12 @@ type Feedback struct {
     Rating   int16  `json:"rating"`
     // Date string `json:"date"`
 }
+type Slot struct {
+    Time      string `bson:"time"`
+    Available bool   `bson:"available"`
+}
+
+type ScheduleDay struct {
+    Date  string `bson:"date"`
+    Slots []Slot `bson:"slots"`
+}

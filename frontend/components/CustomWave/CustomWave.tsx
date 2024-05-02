@@ -12,9 +12,9 @@ const CustomWave = () => {
         sizes="vw"
         style={{
           width: "100%",
-          height: "auto",
+          height: "320px",
           position: "absolute",
-          bottom: "-5vh",
+          bottom: "-13vh",
           zIndex: 0,
         }}
       />

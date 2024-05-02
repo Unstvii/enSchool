@@ -30,7 +30,9 @@ func main() {
 	mux.HandleFunc("/courses/", courseGetHandler)
 	mux.HandleFunc("/courses/feedback", feedbackCreateHandler)
 	mux.HandleFunc("/courses/feedbacks", feedbacksGetHandler)
-
+	mux.HandleFunc("/lesson", createScheduleData)
+	mux.HandleFunc("/lesson/",lessonGetHandler)
+	
 	log.Printf("Starting server on :%v", os.Getenv("SERVER"))
 	err := http.ListenAndServe(":"+os.Getenv("SERVER"), mux)
 	if err != nil {
