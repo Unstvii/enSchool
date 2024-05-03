@@ -70,8 +70,9 @@ const BookLesson = () => {
     setDay(newValue);
   };
   const handleClick = (slot) => {
-    if (slot.available) {
-      setHour(slot.time);
+    console.log(slot);
+    if (slot.Available) {
+      setHour(slot.Time);
       return;
     }
     toast.error("The time is already taken, please choose another one ", {
