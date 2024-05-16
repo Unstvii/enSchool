@@ -39,3 +39,7 @@ type ScheduleDay struct {
     Date  string `bson:"date"`
     Slots []Slot `bson:"slots"`
 }
+type FeedbackResponse struct {
+	Feedbacks []Feedback  `json:"feedbacks"`
+	Rating    map[int]int `json:"rating"`
+}
