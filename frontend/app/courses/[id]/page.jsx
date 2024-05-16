@@ -32,7 +32,11 @@ function Page() {
           setFeedbacks([]);
           return;
         }
-        setFeedbacks(response.data);
+        setFeedbacks(response.data.reviews);
+        setRatingData({
+          avgRating: response.data.rating,
+          ratingCounts: response.data.rating_counts,
+        });
       } catch (error) {
         console.error("Помилка при отриманні даних", error);
       }

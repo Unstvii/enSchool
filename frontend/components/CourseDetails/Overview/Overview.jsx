@@ -53,7 +53,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Overview = ({ course, feedbacks }) => {
+const Overview = ({ course, feedbacks, ratingData }) => {
   const [urlPart, setCurrentURL] = useState("");
   useEffect(() => {
     if (typeof window !== "undefined") {
