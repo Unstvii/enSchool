@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button, Grid, Typography, Rating, Slider, Box } from "@mui/material";
 import Feedback from "../Feedback/Feedback";
 import { makeStyles } from "@mui/styles";
@@ -13,10 +13,50 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { feedbackSchema } from "../../utility/validationSchemas";
 import styles from "./Overview.scss";
+import RatingBar from "../../RatingBar/RatingBar";
+import zIndex from "@mui/material/styles/zIndex";
 
 const useStyles = makeStyles({
   tabIndicator: {
     height: 0,
+  },
+
+  customFromWrapper: {
+    background: "#E2F0FF",
+    borderRadius: "20px",
+    minHeight: "450px",
+    height: "auto",
+    padding: "20px 0px 20px 0px",
+    display: "flex",
+    alignItems: "center",
+  },
+  customForm: {
+    width: "90%",
+    margin: "0 auto",
+    display: "flex",
+    flexDirection: "column",
+    gap: "20px",
+  },
+  customFormItem: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "6px",
+  },
+  customFormButton: {
+    width: "160px",
+    fontSize: "16px",
+    fontWeight: 500,
+    borderRadius: "8px",
+    height: "44px",
+    border: "none",
+    background: "#49BBBD",
+    color: "#FFFFFF",
+    "&:hover": {
+      filter: "brightness(120%)",
+      boxShadow: "0 0 1px rgba(0, 0, 0, 0.5)",
+      transition: "all 0.3s ease",
+      cursor: "pointer",
+    },
   },
   customButton: {
     fontSize: "20px",
@@ -28,7 +68,13 @@ const useStyles = makeStyles({
     width: "200px",
     height: "63px",
     marginLeft: "30px",
+    "&:hover": {
+      filter: "brightness(90%)",
+      boxShadow: "0 0 1px rgba(0, 0, 0, 0.5)",
+      transition: "all 0.3s ease",
+    },
   },
+
   customActiveButton: {
     fontSize: "20px",
     fontWeight: 700,
@@ -54,14 +100,9 @@ const useStyles = makeStyles({
 });
 
 const Overview = ({ course, feedbacks, ratingData }) => {
-  const [urlPart, setCurrentURL] = useState("");
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const currentURL = window.location.href;
-      setCurrentURL(currentURL.split("/").pop());
-    }
-  }, []);
-
+  const currentURL = window.location.href;
+  const urlPart = currentURL.split("/").pop();
+  console.log(ratingData);
   const [value, setValue] = useState("1");
 
   const handleChange = (event, newValue) => {
@@ -80,13 +121,22 @@ const Overview = ({ course, feedbacks, ratingData }) => {
     >
       <Grid>
         <Grid sx={{ display: "flex", mt: "50px" }}>
-          <Box sx={{ width: "100%", typography: "body1", paddingLeft: "0px" }}>
+          <Box
+            sx={{
+              width: "100%",
+              typography: "body1",
+              paddingLeft: "0px",
+            }}
+          >
             <TabContext value={value}>
               <Box
                 sx={{
                   display: "flex",
                   justifyContent: "flex-start",
+
                   transform: "translateX(0px)",
+
+                  width: "850px",
                 }}
               >
                 <TabList
@@ -126,14 +176,13 @@ const Overview = ({ course, feedbacks, ratingData }) => {
                 <Grid
                   sx={{
                     background: "#E2F0FF",
-                    width: "150%",
+                    width: "100%",
                     maxWidth: "950px",
                     borderRadius: "20px",
-                    mt: "50px",
                     padding: "50px",
                   }}
                 >
-                  <Grid sx={{ display: "flex" }}>
+                  <Grid sx={{ display: "flex", gap: "50px" }}>
                     <Grid
                       sx={{
                         background: "#FFFFFF",
@@ -156,9 +205,22 @@ const Overview = ({ course, feedbacks, ratingData }) => {
                           letterSpacing: "1px",
                         }}
                       >
-                        4 out of 5
+                        {ratingData.avgRating
+                          ? (Math.ceil(ratingData.avgRating * 2) / 2).toFixed(0)
+                          : "5"}
+                        <> </> out of 5
                       </Typography>
-                      <Rating name="read-only" value={4} readOnly />
+                      <Rating
+                        name="read-only"
+                        value={
+                          ratingData.avgRating
+                            ? (Math.ceil(ratingData.avgRating * 2) / 2).toFixed(
+                                0
+                              )
+                            : "5"
+                        }
+                        readOnly
+                      />
 
                       <Typography
                         sx={{
@@ -179,72 +241,26 @@ const Overview = ({ course, feedbacks, ratingData }) => {
                         gap: "13px",
                       }}
                     >
-                      <Grid className={classes.rateContainer}>
-                        <Typography className={classes.statsTitle}>
-                          5 Stars
-                        </Typography>
-                        <Slider
-                          sx={{ maxWidth: "480px", color: "#49BBBD" }}
-                          step={1}
-                          max={100}
-                          value={80}
+                      {ratingData.ratingCounts.map((rating, index) => (
+                        <RatingBar
+                          key={index}
+                          stars={index + 1}
+                          initialCount={rating ? rating.count : 0}
+                          allStars={ratingData.ratingCounts.length}
+                          ratingCounts={ratingData.ratingCounts}
                         />
-                      </Grid>
-                      <Grid className={classes.rateContainer}>
-                        <Typography className={classes.statsTitle}>
-                          4 Stars
-                        </Typography>
-                        <Slider
-                          sx={{ maxWidth: "480px", color: "#49BBBD" }}
-                          step={1}
-                          max={100}
-                          value={10}
-                        />
-                      </Grid>
-                      <Grid className={classes.rateContainer}>
-                        <Typography className={classes.statsTitle}>
-                          3 Stars
-                        </Typography>
-                        <Slider
-                          sx={{ maxWidth: "480px", color: "#49BBBD" }}
-                          step={1}
-                          max={100}
-                          value={5}
-                        />
-                      </Grid>
-                      <Grid className={classes.rateContainer}>
-                        <Typography className={classes.statsTitle}>
-                          2 Stars
-                        </Typography>
-                        <Slider
-                          sx={{ maxWidth: "480px", color: "#49BBBD" }}
-                          step={1}
-                          max={100}
-                          value={3}
-                        />
-                      </Grid>
-                      <Grid className={classes.rateContainer}>
-                        <Typography className={classes.statsTitle}>
-                          1 Stars
-                        </Typography>
-                        <Slider
-                          sx={{ maxWidth: "480px", color: "#49BBBD" }}
-                          step={1}
-                          max={100}
-                          value={3}
-                        />
-                      </Grid>
+                      ))}
                     </Grid>
                   </Grid>
                   <Grid sx={{ mt: "70px" }}>
                     {feedbacks.map((item, index) => (
                       <>
                         <Feedback
-                          author="Lina"
+                          author={item.nickname}
                           index={index}
                           date={2}
                           rate={item.rating}
-                          title={item.feedback}
+                          title={item.review}
                           image="https://images.unsplash.com/photo-1573496774379-b930dba17d8b?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                         />
                         <Box
@@ -262,62 +278,15 @@ const Overview = ({ course, feedbacks, ratingData }) => {
                 </Grid>
               </TabPanel>
               <TabPanel value="2">
-                <Grid sx={{ width: "100%", background: "red" }}>
-                  {/* <Formik
-                    initialValues={{
-                      nickname: "",
-                      feedback: "",
-                      rate: 1,
-                    }}
-                    validationSchema={feedbackSchema}
-                    onSubmit={async (values) => {
-                      console.log(values);
-                      alert("clicked");
-                      try {
-                        const response = await postFeedback(values);
-                        console.log(response.data);
-                      } catch (err) {
-                        toast.error("connection error!", {
-                          position: toast.POSITION.TOP_LEFT,
-                        });
-                      }
-                    }}
-                  >
-                    <Form className={styles.form}>
-                      <label htmlFor="nickname">nickname</label>
-                      <Field
-                        name="nickname"
-                        placeholder="Enter your nickname"
-                        type="text"
-                      />
-                      <ErrorMessage
-                        name="nickname"
-                        component="div"
-                        className={styles.form__error}
-                      />
-
-                      <>
-                        <label htmlFor="feedback">Feedback</label>
-                        <Field
-                          name="feedback"
-                          placeholder="Enter your feedback"
-                          type="text"
-                        />
-                        <ErrorMessage
-                          name="feedback"
-                          component="div"
-                          className={styles.form__error}
-                        />
-                      </>
-                      <Field name="rating" component={Rating} size="large" />
-
-                      <button type="submit">Submit</button>
-                    </Form>
-                  </Formik> */}
+                <Grid
+                  sx={{
+                    width: "100%",
+                  }}
+                >
                   <Formik
                     initialValues={{
                       nickname: "",
-                      feedback: "",
+                      review: "",
                       courseid: urlPart,
                     }}
                     validationSchema={feedbackSchema}
@@ -335,44 +304,72 @@ const Overview = ({ course, feedbacks, ratingData }) => {
                     }}
                   >
                     {({ values, setFieldValue }) => (
-                      <Form>
-                        <label htmlFor="nickname">nickname</label>
-                        <Field
-                          name="nickname"
-                          placeholder="Enter your nickname"
-                          type="text"
-                        />
-                        <ErrorMessage
-                          name="nickname"
-                          component="div"
-                          className={styles.form__error}
-                        />
-                        <>
-                          <label htmlFor="feedback">Feedback</label>
-                          <Field
-                            name="feedback"
-                            placeholder="Enter your feedback"
-                            type="text"
-                          />
-                          <ErrorMessage
-                            name="feedback"
-                            component="div"
-                            className={styles.form__error}
-                          />
-                        </>
-                        <Field name="rating">
-                          {({ field }) => (
-                            <Rating
-                              {...field}
-                              value={values.rating}
-                              onChange={(event, newValue) => {
-                                setFieldValue("rating", newValue);
+                      <div className={classes.customFromWrapper}>
+                        <Form className={classes.customForm}>
+                          <div className={classes.customFormItem}>
+                            <label htmlFor="rating">Your Ratings</label>
+                            <Field name="rating">
+                              {({ field }) => (
+                                <Rating
+                                  {...field}
+                                  value={values.rating}
+                                  style={{ width: "120px" }}
+                                  onChange={(event, newValue) => {
+                                    setFieldValue("rating", newValue);
+                                  }}
+                                />
+                              )}
+                            </Field>
+                          </div>
+                          <div className={classes.customFormItem}>
+                            <label htmlFor="nickname">Your nickname</label>
+                            <Field
+                              name="nickname"
+                              placeholder="Enter your nickname"
+                              type="text"
+                              style={{
+                                height: "28px",
+                                borderRadius: "5px",
+                                border: "1px solid silver",
+                                paddingLeft: "10px",
                               }}
                             />
-                          )}
-                        </Field>
-                        <button type="submit">Submit</button>
-                      </Form>
+                            <ErrorMessage
+                              name="nickname"
+                              component="div"
+                              className={styles.form__error}
+                            />
+                          </div>
+                          <div className={classes.customFormItem}>
+                            <label htmlFor="review">Comments</label>
+                            <Field
+                              name="review"
+                              placeholder="Enter your feedback"
+                              component="textarea"
+                              style={{
+                                height: "120px",
+                                borderRadius: "5px",
+                                border: "1px solid silver",
+                                padding: "10px",
+                                boxSizing: "border-box",
+                                resize: "vertical", // Allow vertical resizing
+                              }}
+                            />
+                            <ErrorMessage
+                              name="review"
+                              component="div"
+                              className={styles.form__error}
+                            />
+                          </div>
+
+                          <button
+                            type="submit"
+                            className={classes.customFormButton}
+                          >
+                            Submit Ratings
+                          </button>
+                        </Form>
+                      </div>
                     )}
                   </Formik>
                   <ToastContainer />

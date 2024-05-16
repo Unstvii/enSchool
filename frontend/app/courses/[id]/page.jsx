@@ -16,6 +16,10 @@ function Page() {
   const id = pathSegments[pathSegments.length - 1];
   const [course, setCourse] = useState([]);
   const [feedbacks, setFeedbacks] = useState([]);
+  const [ratingData, setRatingData] = useState({
+    avgRating: null,
+    ratingCounts: [{ null: null }],
+  });
   useEffect(() => {
     const fetchCourse = async () => {
       try {
@@ -28,10 +32,6 @@ function Page() {
     const fetchFeedback = async () => {
       try {
         const response = await getFeedbacks(id);
-        if (response.data === null) {
-          setFeedbacks([]);
-          return;
-        }
         setFeedbacks(response.data.reviews);
         setRatingData({
           avgRating: response.data.rating,
@@ -44,12 +44,15 @@ function Page() {
 
     fetchCourse();
     fetchFeedback();
-    console.log(feedbacks);
   }, []);
 
   return (
     <>
-      <CourseDetails course={course} feedbacks={feedbacks} />
+      <CourseDetails
+        course={course}
+        feedbacks={feedbacks}
+        ratingData={ratingData}
+      />
       <CustomCarousel
         title="Marketing Articles"
         link="#"
