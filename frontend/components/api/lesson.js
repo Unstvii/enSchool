@@ -6,7 +6,6 @@ export async function getDay(values) {
   return await axios.get(`${API_URL}/lessons/?date=${values}`);
 }
 
-export async function bookLesson(values) {
-  return await axios.post(`${API_URL}/lesson/?date=${values}`);
+export async function bookLesson(day, hour) {
+  return await axios.get(`${API_URL}/lesson/?date=${day}&time=${hour}`);
 }
-

@@ -9,7 +9,7 @@ import { makeStyles } from "@mui/styles";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getDay } from "@/components/api/lesson";
-
+import { bookLesson } from "@/components/api/lesson";
 const useStyles = makeStyles({
   lessonInfo: {
     fontSize: "14px",
@@ -69,12 +69,40 @@ const BookLesson = () => {
   const handleChange = (newValue) => {
     setDay(newValue);
   };
+  const updateSlotAvailability = (slotTime) => {
+    setSlots((prevSlots) =>
+      prevSlots.map((slot) =>
+        slot.Time === slotTime ? { ...slot, Available: !slot.Available } : slot
+      )
+    );
+  };
+  const handleBook = async () => {
+    try {
+      if (hour === null) {
+      }
+      const response = await bookLesson(day.format("YYYY-MM-DD"), hour);
+      if (response.status == 200) {
+        toast.success(
+          `Success, your lesson starts ${day.format("YYYY-MM-DD")} at ${hour}`,
+          {
+            position: toast.POSITION.TOP_LEFT,
+          }
+        );
+        updateSlotAvailability(hour);
+      }
+      console.log(response);
+    } catch (error) {
+      console.error("Помилка при отриманні даних", error);
+    }
+  };
+
   const handleClick = (slot) => {
     console.log(slot);
     if (slot.Available) {
       setHour(slot.Time);
       return;
     }
+    setHour(null);
     toast.error("The time is already taken, please choose another one ", {
       position: toast.POSITION.TOP_LEFT,
     });
@@ -203,10 +231,12 @@ const BookLesson = () => {
               {day.format("dddd D")}
             </Typography>
             <Typography className={classes.lessonInfo}>
-              <span style={{ fontWeight: 700 }}> Hour: </span> {hour}
+              <span style={{ fontWeight: 700 }}> Hour: </span>{" "}
+              {hour ? hour : "choose hour from free spots"}
             </Typography>
             <Button
               variant="contained"
+              onClick={handleBook}
               sx={{
                 fontSize: "24px",
                 fontWeight: 400,
